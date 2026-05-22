@@ -1,8 +1,31 @@
 {
     "name": "bamise/bamise",
-    "description": "Secure Enterprise CRUD Library",
+    "description": "Secure enterprise CRUD library for PHP 8.4+ — hexagonal architecture, DDD, PSR standards, JWT/CSRF/XSS protection, event system.",
     "type": "library",
     "license": "MIT",
+    "keywords": [
+        "crud",
+        "repository",
+        "ddd",
+        "hexagonal",
+        "security",
+        "psr",
+        "event",
+        "php8",
+        "enterprise"
+    ],
+    "homepage": "https://github.com/bamise/bamise",
+    "authors": [
+        {
+            "name": "Segun Mayor",
+            "email": "lungu.sports.entertainment@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/bamise/bamise/issues",
+        "source": "https://github.com/bamise/bamise"
+    },
     "require": {
         "php": "^8.4",
         "psr/container": "^2.0",
@@ -48,6 +71,12 @@
     },
     "suggest": {
         "firebase/php-jwt": "^6.10 for JwtAuthAdapter (HS256 bearer validation)"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.1.x-dev",
+            "dev-main": "0.1.x-dev"
+        }
     },
     "minimum-stability": "stable",
     "config": {
