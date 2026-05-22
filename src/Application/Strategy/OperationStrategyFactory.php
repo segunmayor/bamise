@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace Bamise\Application\Strategy;
 
+use Bamise\Application\Registry\RepositoryResolver;
+use Bamise\Application\Registry\ResourceRegistry;
 use Bamise\Contract\Crud\OperationStrategyFactoryInterface;
 use Bamise\Contract\Crud\OperationStrategyInterface;
 use Bamise\Contract\Enum\OperationType;
+use Bamise\Domain\Service\FillableGuard;
 use InvalidArgumentException;
 
 final class OperationStrategyFactory implements OperationStrategyFactoryInterface
@@ -18,19 +21,18 @@ final class OperationStrategyFactory implements OperationStrategyFactoryInterfac
      * @param array<string, OperationStrategyInterface>|iterable<OperationType, OperationStrategyInterface> $strategies
      */
     public function __construct(
-        CreateStrategy $create,
-        ReadStrategy $read,
-        UpdateStrategy $update,
-        DeleteStrategy $delete,
+        RepositoryResolver $repositories,
+        ResourceRegistry $resources,
+        FillableGuard $fillableGuard,
         ?iterable $strategies = null,
     ) {
         $this->strategies = [
-            OperationType::Create->value => $create,
-            OperationType::Read->value => $read,
-            OperationType::Update->value => $update,
-            OperationType::Delete->value => $delete,
-            OperationType::BulkUpdate->value => $update,
-            OperationType::BulkDelete->value => $delete,
+            OperationType::Create->value => new CreateStrategy($repositories, $resources, $fillableGuard),
+            OperationType::Read->value => new ReadStrategy($repositories, $resources),
+            OperationType::Update->value => new UpdateStrategy($repositories, $resources, $fillableGuard),
+            OperationType::Delete->value => new DeleteStrategy($repositories, $resources),
+            OperationType::BulkUpdate->value => new UpdateStrategy($repositories, $resources, $fillableGuard),
+            OperationType::BulkDelete->value => new DeleteStrategy($repositories, $resources),
         ];
 
         if ($strategies !== null) {

@@ -21,11 +21,8 @@ use Bamise\Application\Middleware\ValidateMiddleware;
 use Bamise\Application\Registry\ResourceRegistry;
 use Bamise\Application\Response\ExceptionMapper;
 use Bamise\Application\Response\ResponseMapper;
-use Bamise\Application\Strategy\CreateStrategy;
-use Bamise\Application\Strategy\DeleteStrategy;
+use Bamise\Application\Registry\RepositoryResolver;
 use Bamise\Application\Strategy\OperationStrategyFactory;
-use Bamise\Application\Strategy\ReadStrategy;
-use Bamise\Application\Strategy\UpdateStrategy;
 use Bamise\Domain\Event\LifecycleEventFactory;
 use Bamise\Domain\Model\Subject;
 use Bamise\Domain\Policy\PolicyEvaluator;
@@ -48,17 +45,16 @@ use PHPUnit\Framework\TestCase;
 
 final class CrudApplicationTest extends TestCase
 {
-    public function test_happy_path_read_returns_not_implemented_strategy_result(): void
+    public function test_happy_path_read_without_id_returns_not_found(): void
     {
-        $registry = new ResourceRegistry(['users' => new FakeResourceDefinition()]);
+        $resourceRegistry = new ResourceRegistry(['users' => new FakeResourceDefinition()]);
         $subject = new Subject(1, [], ['users.read']);
         $contextFactory = new CrudContextFactory();
-        $repository = new FakeRepository();
+        $repositoryResolver = new RepositoryResolver(['users' => new FakeRepository()]);
         $strategyFactory = new OperationStrategyFactory(
-            new CreateStrategy($repository),
-            new ReadStrategy($repository),
-            new UpdateStrategy($repository),
-            new DeleteStrategy($repository),
+            $repositoryResolver,
+            $resourceRegistry,
+            new FillableGuard(),
         );
         $terminal = new CrudOrchestrator(
             new FakeEventDispatcherPort(),
@@ -84,7 +80,7 @@ final class CrudApplicationTest extends TestCase
                 new PrioritizedMiddleware(
                     new ValidateMiddleware(
                         new FakeValidatorPort(),
-                        $registry,
+                        $resourceRegistry,
                         new FillableGuard(),
                         $contextFactory,
                     ),
@@ -102,7 +98,7 @@ final class CrudApplicationTest extends TestCase
             $terminal,
         );
         $app = new CrudApplication(
-            $registry,
+            $resourceRegistry,
             $contextFactory,
             new OperationResolver(new OperationTypeMapper()),
             $pipeline,
@@ -117,6 +113,6 @@ final class CrudApplicationTest extends TestCase
 
         self::assertFalse($envelope->success);
         self::assertSame(422, $envelope->httpStatus);
-        self::assertSame('Infrastructure not wired', $envelope->errors['message']);
+        self::assertSame('Resource not found', $envelope->errors['message']);
     }
 }

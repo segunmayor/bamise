@@ -111,9 +111,9 @@ sequenceDiagram
 
 On exception, `ExceptionMapper` returns a failure `ResponseEnvelope` with an HTTP status hint.
 
-## Placeholder strategies
+## Strategies and persistence
 
-`CreateStrategy`, `ReadStrategy`, `UpdateStrategy`, and `DeleteStrategy` accept `RepositoryInterface` for future wiring but return `CrudResult` failure (`Infrastructure not wired`). Module 4 will provide PDO repositories and real persistence.
+`CreateStrategy`, `ReadStrategy`, `UpdateStrategy`, and `DeleteStrategy` resolve repositories per resource via `RepositoryResolver` and apply `FillableGuard` before writes. See [04-infrastructure.md](04-infrastructure.md) for PDO wiring.
 
 ## Ports
 
@@ -125,4 +125,4 @@ Application code imports `Bamise\Contract\*` only. See [`src/Port/README.md`](..
 
 ## Next module
 
-**Module 4 — Infrastructure**: PDO connection, repository implementations, CSRF/sanitizer/rate limiter concrete classes, policy class wiring, and strategy persistence.
+**Module 8 — Security** (recommended): CSRF, sanitizer, rate limiter, and policy concrete classes. **Module 7 — Query Builder** follows for fluent reads.
