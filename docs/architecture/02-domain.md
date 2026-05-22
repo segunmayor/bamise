@@ -136,15 +136,8 @@ sequenceDiagram
 
 Lightweight unit tests under `tests/Unit/Domain/` use `FakeCrudRequest` in `tests/Fixtures/` to exercise resolution order, permissions, and fillable guarding without infrastructure.
 
-## Next module — Application (Module 3)
+## Next module
 
-**Module 3 — Application** (`src/Application/`) will add:
+**Module 3 — Application** is documented in [03-application.md](03-application.md).
 
-- CRUD orchestrator / pipeline composing middleware and strategies
-- Port adapter facades wiring Contract ports to Infrastructure implementations
-- `AuthPortInterface` → `Subject` mapping
-- Resource definition registry loading `Resource` + fillable metadata into the pipeline
-- Exception → HTTP response mapping
-- Integration of `PolicyEvaluator`, `PermissionEvaluator`, `OperationResolver`, and `LifecycleEventFactory` in the request lifecycle
-
-Infrastructure (Module 4+) implements PDO repositories, query builder SQL, CSRF, sanitizers, and concrete policy classes.
+**Module 4 — Infrastructure** implements PDO repositories, query builder SQL, CSRF, sanitizers, and concrete policy classes.
