@@ -47,31 +47,49 @@ final class LifecycleEventFactory
         };
     }
 
+    /**
+     * @param array<string, mixed>|null $payload
+     */
     public function beforeCreate(CrudContext $context, ?array $payload = null): BeforeCreate
     {
         return new BeforeCreate($context, $payload);
     }
 
+    /**
+     * @param array<string, mixed>|null $payload
+     */
     public function afterCreate(CrudContext $context, ?array $payload = null): AfterCreate
     {
         return new AfterCreate($context, $payload);
     }
 
+    /**
+     * @param array<string, mixed>|null $payload
+     */
     public function beforeUpdate(CrudContext $context, ?array $payload = null): BeforeUpdate
     {
         return new BeforeUpdate($context, $payload);
     }
 
+    /**
+     * @param array<string, mixed>|null $payload
+     */
     public function afterUpdate(CrudContext $context, ?array $payload = null): AfterUpdate
     {
         return new AfterUpdate($context, $payload);
     }
 
+    /**
+     * @param array<string, mixed>|null $payload
+     */
     public function beforeDelete(CrudContext $context, ?array $payload = null): BeforeDelete
     {
         return new BeforeDelete($context, $payload);
     }
 
+    /**
+     * @param array<string, mixed>|null $payload
+     */
     public function afterDelete(CrudContext $context, ?array $payload = null): AfterDelete
     {
         return new AfterDelete($context, $payload);

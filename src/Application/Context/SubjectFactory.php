@@ -27,7 +27,7 @@ final class SubjectFactory
             );
         }
 
-        if (is_object($authSubject) && method_exists($authSubject, 'id')) {
+        if (method_exists($authSubject, 'id')) {
             $id = $authSubject->id();
             if (! is_string($id) && ! is_int($id)) {
                 throw new InvalidArgumentException('Auth subject id must be string or int.');
@@ -44,22 +44,5 @@ final class SubjectFactory
         throw new InvalidArgumentException(
             sprintf('Cannot map auth subject of type "%s" to domain Subject.', $authSubject::class),
         );
-    }
-}
-
-/**
- * Simple DTO for infrastructure adapters that return plain auth payloads.
- */
-readonly class AuthSubjectDto
-{
-    /**
-     * @param list<string> $roles
-     * @param list<string> $permissions
-     */
-    public function __construct(
-        public string|int $id,
-        public array $roles = [],
-        public array $permissions = [],
-    ) {
     }
 }

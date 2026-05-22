@@ -14,7 +14,6 @@ use Bamise\Contract\Http\CrudRequestInterface;
 final class SessionAuthAdapter implements AuthPortInterface
 {
     public function __construct(
-        private readonly string $sessionField = '_session_id',
         private readonly string $subjectField = '_subject_id',
     ) {
     }

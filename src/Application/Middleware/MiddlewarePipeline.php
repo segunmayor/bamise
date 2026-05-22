@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Bamise\Application\Middleware;
 
 use Bamise\Contract\CrudHandlerInterface;
+use Bamise\Contract\MiddlewareInterface;
 use Bamise\Contract\ValueObject\CrudContext;
 use Bamise\Contract\ValueObject\CrudResult;
 

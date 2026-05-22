@@ -50,8 +50,10 @@ final class PdoConnection implements ConnectionInterface
 
             return $result;
         } catch (Throwable $throwable) {
-            if ($this->pdo->inTransaction()) {
+            try {
                 $this->pdo->rollBack();
+            } catch (Throwable) {
+                // Transaction was already ended (e.g. by a failed commit)
             }
 
             throw $throwable;

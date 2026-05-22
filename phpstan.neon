@@ -1,0 +1,11 @@
+parameters:
+    level: 6
+    paths:
+        - src
+    tmpDir: .phpstan.cache
+
+    # Dynamic property access guarded by property_exists() in EventPayloadEncoder
+    checkDynamicProperties: false
+
+    # Interfaces / abstract types used as parameter hints throughout
+    treatPhpDocTypesAsCertain: false

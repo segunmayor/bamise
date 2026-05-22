@@ -9,7 +9,10 @@
         "psr/log": "^3.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^11"
+        "phpunit/phpunit": "^11",
+        "phpstan/phpstan": "^2.0",
+        "friendsofphp/php-cs-fixer": "^3.0",
+        "infection/infection": "^0.29"
     },
     "autoload": {
         "psr-4": {
@@ -21,8 +24,36 @@
             "Bamise\\Tests\\": "tests/"
         }
     },
+    "scripts": {
+        "test": "phpunit --no-coverage",
+        "test-coverage": "phpunit --coverage-clover coverage.xml",
+        "analyse": "phpstan analyse --memory-limit=512M",
+        "cs-check": "php-cs-fixer check --ansi --diff",
+        "cs-fix": "php-cs-fixer fix --ansi",
+        "mutation": "infection --min-msi=70 --min-covered-msi=80 --threads=4",
+        "ci": [
+            "@test",
+            "@analyse",
+            "@cs-check"
+        ]
+    },
+    "scripts-descriptions": {
+        "test": "Run PHPUnit test suite (no coverage)",
+        "test-coverage": "Run PHPUnit with Clover coverage report",
+        "analyse": "Run PHPStan static analysis",
+        "cs-check": "Check code style (PHP CS Fixer, dry-run)",
+        "cs-fix": "Auto-fix code style violations",
+        "mutation": "Run Infection mutation test suite",
+        "ci": "Run test + analyse + cs-check (mirrors CI pipeline)"
+    },
     "suggest": {
         "firebase/php-jwt": "^6.10 for JwtAuthAdapter (HS256 bearer validation)"
     },
-    "minimum-stability": "stable"
+    "minimum-stability": "stable",
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "infection/extension-installer": true
+        }
+    }
 }

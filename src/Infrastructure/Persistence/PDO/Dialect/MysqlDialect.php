@@ -7,7 +7,7 @@ namespace Bamise\Infrastructure\Persistence\PDO\Dialect;
 use Bamise\Contract\Enum\DatabaseDriver;
 use Bamise\Contract\Persistence\DatabaseDialectInterface;
 
-final class MysqlDialect implements DatabaseDialectInterface
+class MysqlDialect implements DatabaseDialectInterface
 {
     public function quoteIdentifier(string $identifier): string
     {

@@ -44,6 +44,9 @@ readonly class PipelineState
         );
     }
 
+    /**
+     * @param array<string, mixed> $inputData
+     */
     public function withSanitizedData(array $inputData): self
     {
         return new self(

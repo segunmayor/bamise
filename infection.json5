@@ -1,0 +1,23 @@
+{
+    "source": {
+        "directories": ["src"],
+        "excludes": [
+            "Infrastructure/Event/Examples"
+        ]
+    },
+    "mutators": {
+        "@default": true
+    },
+    "testFramework": "phpunit",
+    "testFrameworkOptions": "--no-coverage",
+    "minMsi": 70,
+    "minCoveredMsi": 80,
+    "threads": 4,
+    "logs": {
+        "text": ".infection/infection.log",
+        "html": ".infection/infection.html",
+        "badge": {
+            "branch": "main"
+        }
+    }
+}

@@ -10,5 +10,8 @@ interface RequestSignerPortInterface
 {
     public function verify(CrudRequestInterface $request): bool;
 
+    /**
+     * @param array<string, mixed> $payload
+     */
     public function sign(array $payload): string;
 }
