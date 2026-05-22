@@ -21,5 +21,8 @@
             "Bamise\\Tests\\": "tests/"
         }
     },
+    "suggest": {
+        "firebase/php-jwt": "^6.10 for JwtAuthAdapter (HS256 bearer validation)"
+    },
     "minimum-stability": "stable"
 }

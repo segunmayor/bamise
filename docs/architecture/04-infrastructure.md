@@ -6,6 +6,17 @@ The infrastructure module implements persistence adapters for Bamise: PDO connec
 
 ```
 src/Infrastructure/
+├── Cache/
+│   └── InMemoryCache.php
+├── Security/               # Module 8 — see 08-security.md
+│   ├── Csrf/
+│   ├── Sanitizer/
+│   ├── RateLimit/
+│   ├── Signing/
+│   ├── Policy/
+│   ├── Auth/
+│   ├── Audit/
+│   └── SecurityFactory.php
 └── Persistence/
     ├── PDO/
     │   ├── Dialect/          # Mysql, Postgres, Mariadb, Sqlite + factory
@@ -101,13 +112,16 @@ Identifiers must match `^[a-zA-Z_][a-zA-Z0-9_]*$` before quoting.
 | `tests/Fixtures/SqliteTestConnection.php` | Shared `:memory:` connection factory |
 | `tests/Fixtures/TestUserResourceDefinition.php` | Sample resource metadata |
 
+## Security (Module 8)
+
+CSRF, sanitization, rate limiting, HMAC signing, policy adapters, auth, and audit logging live under `src/Infrastructure/Security/`. See [08-security.md](08-security.md).
+
 ## Out of scope (later modules)
 
 - Fluent `QueryBuilderInterface` (Module 7)
-- Full security adapters (Module 8)
-- Queue/cache production adapters
+- Queue production adapters
 - CI/CD wiring
 
 ## Next module
 
-**Module 8 — Security** is recommended before Module 7 (Query Builder): middleware already depends on CSRF, sanitizer, and rate-limiter ports that need concrete implementations for production use.
+**Module 9 — Event system** or **Module 7 — Query Builder** for fluent reads.

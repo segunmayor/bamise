@@ -123,6 +123,23 @@ Application code imports `Bamise\Contract\*` only. See [`src/Port/README.md`](..
 
 `tests/Unit/Application/` uses fakes in `tests/Fixtures/` for port implementations.
 
+## Security wiring (Module 8)
+
+Replace test fakes with infrastructure adapters from `SecurityFactory` (see [08-security.md](08-security.md)):
+
+```php
+$factory = new SecurityFactory($cache, $logger, /* configs */);
+$pipeline = new MiddlewarePipeline([
+    new PrioritizedMiddleware(new RateLimitMiddleware($factory->rateLimiter()), 100),
+    new PrioritizedMiddleware(new AuthenticationMiddleware($factory->bearerAuth(), $subjectFactory, $contextFactory), 200),
+    new PrioritizedMiddleware(new CsrfMiddleware($factory->csrf()), 300),
+    new PrioritizedMiddleware(new SanitizeMiddleware($factory->sanitizer(), $contextFactory), 400),
+    // ValidateMiddleware, AuthorizeMiddleware, AuditMiddleware ...
+], $terminal);
+```
+
+`AuthorizeMiddleware` uses domain `PolicyEvaluator`, which should receive a `PolicyPortInterface` built from `PolicyChain`, `ClassPolicyAdapter`, or `CallablePolicy` — not the factory directly.
+
 ## Next module
 
-**Module 8 — Security** (recommended): CSRF, sanitizer, rate limiter, and policy concrete classes. **Module 7 — Query Builder** follows for fluent reads.
+**Module 9 — Event system** or **Module 7 — Query Builder** for fluent reads.
