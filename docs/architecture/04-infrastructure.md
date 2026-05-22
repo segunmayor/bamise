@@ -8,6 +8,11 @@ The infrastructure module implements persistence adapters for Bamise: PDO connec
 src/Infrastructure/
 ├── Cache/
 │   └── InMemoryCache.php
+├── Event/                  # Module 9 — see 09-events.md
+├── Queue/
+│   └── InMemoryQueue.php
+├── Plugin/
+│   └── DefaultPluginRegistry.php
 ├── Security/               # Module 8 — see 08-security.md
 │   ├── Csrf/
 │   ├── Sanitizer/
@@ -124,4 +129,4 @@ CSRF, sanitization, rate limiting, HMAC signing, policy adapters, auth, and audi
 
 ## Next module
 
-**Module 9 — Event system** or **Module 7 — Query Builder** for fluent reads.
+**Module 7 — Query Builder** for fluent reads. Event system: [09-events.md](09-events.md).

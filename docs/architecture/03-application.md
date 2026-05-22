@@ -140,6 +140,10 @@ $pipeline = new MiddlewarePipeline([
 
 `AuthorizeMiddleware` uses domain `PolicyEvaluator`, which should receive a `PolicyPortInterface` built from `PolicyChain`, `ClassPolicyAdapter`, or `CallablePolicy` — not the factory directly.
 
+## Event wiring (Module 9)
+
+Replace `FakeEventDispatcherPort` with `SyncEventDispatcher` and register listeners or `EventSubscriberInterface` implementations via `SubscriberLoader`. See [09-events.md](09-events.md).
+
 ## Next module
 
-**Module 9 — Event system** or **Module 7 — Query Builder** for fluent reads.
+**Module 7 — Query Builder** for fluent reads.
