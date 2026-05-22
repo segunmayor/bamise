@@ -9,8 +9,9 @@ Bamise follows hexagonal (ports and adapters) architecture. Module documentation
 | Module | Path | Notes |
 |--------|------|-------|
 | 1 — Contracts | `src/Contract/` | Pure interfaces and value contracts |
-| 2 — Domain | `src/Domain/` | *(planned)* |
-| 3+ | `src/Infrastructure/`, etc. | *(planned)* |
+| 2 — Domain | `src/Domain/` | Models, services, policy coordination |
+| 3 — Application | `src/Application/` | *(planned)* Orchestrator and port wiring |
+| 4+ | `src/Infrastructure/`, etc. | *(planned)* |
 
 **Naming:** Application-layer ports may live under `src/Port/` in later modules; they alias the same contracts defined in `src/Contract/`. See [01-contracts](docs/architecture/01-contracts.md).
 
