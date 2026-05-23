@@ -50,11 +50,17 @@ final class DeleteStrategyTest extends TestCase
     private function makeStrategy(bool $deleted = true): DeleteStrategy
     {
         $repo = new class ($deleted) implements RepositoryInterface {
-            public function __construct(private bool $deleted) {}
-            public function find(ResourceId $id): ?array { return null; }
-            public function insert(array $data): ResourceId { return new ResourceId(1); }
-            public function update(ResourceId $id, array $data): bool { return true; }
-            public function delete(ResourceId $id): bool { return $this->deleted; }
+            public function __construct(private bool $deleted)
+            {
+            }
+
+            public function find(ResourceId $id): ?array { unset($id); return null; }
+            public function insert(array $data): ResourceId { unset($data); return new ResourceId(1); }
+            public function update(ResourceId $id, array $data): bool { unset($id, $data); return true; }
+            public function delete(ResourceId $id): bool { unset($id); return $this->deleted; }
+            public function findAll(array $criteria = [], int $limit = 100, int $offset = 0): array { return []; }
+            public function updateBulk(array $criteria, array $data): int { return 0; }
+            public function deleteBulk(array $criteria): int { return 0; }
         };
 
         $def = new FakeResourceDefinition();

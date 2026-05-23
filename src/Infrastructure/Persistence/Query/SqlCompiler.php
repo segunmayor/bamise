@@ -118,6 +118,109 @@ final class SqlCompiler
     }
 
     /**
+     * @param array<string, mixed> $criteria
+     */
+    public function compileSelectAll(
+        string $table,
+        array $criteria = [],
+        int $limit = 100,
+        int $offset = 0,
+    ): CompiledQuery {
+        $quotedTable = $this->dialect->quoteIdentifier($table);
+        $bindings = [];
+        $sql = sprintf('SELECT * FROM %s', $quotedTable);
+
+        if ($criteria !== []) {
+            $whereParts = [];
+
+            foreach ($criteria as $column => $value) {
+                $whereParts[] = sprintf(
+                    '%s = :__w_%s',
+                    $this->dialect->quoteIdentifier($column),
+                    $column,
+                );
+                $bindings['__w_' . $column] = $value;
+            }
+
+            $sql .= ' WHERE ' . implode(' AND ', $whereParts);
+        }
+
+        $sql .= sprintf(' LIMIT %d OFFSET %d', $limit, $offset);
+
+        return new CompiledQuery($sql, $bindings);
+    }
+
+    /**
+     * @param array<string, mixed> $criteria
+     * @param array<string, mixed> $data
+     */
+    public function compileUpdateWhere(string $table, array $criteria, array $data): CompiledQuery
+    {
+        if ($data === []) {
+            throw new \InvalidArgumentException('Bulk update requires at least one column.');
+        }
+
+        $quotedTable = $this->dialect->quoteIdentifier($table);
+        $setParts = [];
+        $bindings = [];
+
+        foreach ($data as $column => $value) {
+            $setParts[] = sprintf(
+                '%s = :%s',
+                $this->dialect->quoteIdentifier($column),
+                $column,
+            );
+            $bindings[$column] = $value;
+        }
+
+        $sql = sprintf('UPDATE %s SET %s', $quotedTable, implode(', ', $setParts));
+
+        if ($criteria !== []) {
+            $whereParts = [];
+
+            foreach ($criteria as $column => $value) {
+                $whereParts[] = sprintf(
+                    '%s = :__w_%s',
+                    $this->dialect->quoteIdentifier($column),
+                    $column,
+                );
+                $bindings['__w_' . $column] = $value;
+            }
+
+            $sql .= ' WHERE ' . implode(' AND ', $whereParts);
+        }
+
+        return new CompiledQuery($sql, $bindings);
+    }
+
+    /**
+     * @param array<string, mixed> $criteria
+     */
+    public function compileDeleteWhere(string $table, array $criteria): CompiledQuery
+    {
+        $quotedTable = $this->dialect->quoteIdentifier($table);
+        $bindings = [];
+        $sql = sprintf('DELETE FROM %s', $quotedTable);
+
+        if ($criteria !== []) {
+            $whereParts = [];
+
+            foreach ($criteria as $column => $value) {
+                $whereParts[] = sprintf(
+                    '%s = :__w_%s',
+                    $this->dialect->quoteIdentifier($column),
+                    $column,
+                );
+                $bindings['__w_' . $column] = $value;
+            }
+
+            $sql .= ' WHERE ' . implode(' AND ', $whereParts);
+        }
+
+        return new CompiledQuery($sql, $bindings);
+    }
+
+    /**
      * @param list<string> $allowedColumns
      * @param array<string, mixed> $data
      *

@@ -24,4 +24,21 @@ interface RepositoryInterface
     public function update(ResourceId $id, array $data): bool;
 
     public function delete(ResourceId $id): bool;
+
+    /**
+     * @param array<string, mixed> $criteria
+     * @return list<array<string, mixed>>
+     */
+    public function findAll(array $criteria = [], int $limit = 100, int $offset = 0): array;
+
+    /**
+     * @param array<string, mixed> $criteria
+     * @param array<string, mixed> $data
+     */
+    public function updateBulk(array $criteria, array $data): int;
+
+    /**
+     * @param array<string, mixed> $criteria
+     */
+    public function deleteBulk(array $criteria): int;
 }

@@ -45,7 +45,7 @@ use PHPUnit\Framework\TestCase;
 
 final class CrudApplicationTest extends TestCase
 {
-    public function test_happy_path_read_without_id_returns_not_found(): void
+    public function test_happy_path_read_without_id_returns_empty_collection(): void
     {
         $resourceRegistry = new ResourceRegistry(['users' => new FakeResourceDefinition()]);
         $subject = new Subject(1, [], ['users.read']);
@@ -111,8 +111,8 @@ final class CrudApplicationTest extends TestCase
             'users',
         );
 
-        self::assertFalse($envelope->success);
-        self::assertSame(422, $envelope->httpStatus);
-        self::assertSame('Resource not found', $envelope->errors['message']);
+        self::assertTrue($envelope->success);
+        self::assertSame(200, $envelope->httpStatus);
+        self::assertSame([], $envelope->data['items']);
     }
 }

@@ -78,4 +78,63 @@ final class PdoRepositoryTest extends TestCase
         self::assertNotNull($found);
         self::assertArrayNotHasKey('is_admin', $found);
     }
+
+    public function test_find_all_returns_all_rows_without_criteria(): void
+    {
+        $this->repository->insert(['name' => 'Ada', 'email' => 'ada@example.com']);
+        $this->repository->insert(['name' => 'Grace', 'email' => 'grace@example.com']);
+
+        $rows = $this->repository->findAll();
+
+        self::assertCount(2, $rows);
+        self::assertSame('Ada', $rows[0]['name']);
+        self::assertSame('Grace', $rows[1]['name']);
+    }
+
+    public function test_find_all_respects_limit_and_offset(): void
+    {
+        $this->repository->insert(['name' => 'Ada', 'email' => 'ada@example.com']);
+        $this->repository->insert(['name' => 'Grace', 'email' => 'grace@example.com']);
+        $this->repository->insert(['name' => 'Lise', 'email' => 'lise@example.com']);
+
+        $rows = $this->repository->findAll([], 2, 1);
+
+        self::assertCount(2, $rows);
+        self::assertSame('Grace', $rows[0]['name']);
+    }
+
+    public function test_update_bulk_updates_matching_rows(): void
+    {
+        $this->repository->insert(['name' => 'Ada', 'email' => 'ada@example.com']);
+        $this->repository->insert(['name' => 'Grace', 'email' => 'grace@example.com']);
+
+        $affected = $this->repository->updateBulk(['name' => 'Ada'], ['email' => 'new@example.com']);
+
+        self::assertSame(1, $affected);
+
+        $rows = $this->repository->findAll(['name' => 'Ada']);
+        self::assertSame('new@example.com', $rows[0]['email']);
+    }
+
+    public function test_delete_bulk_deletes_matching_rows(): void
+    {
+        $this->repository->insert(['name' => 'Ada', 'email' => 'ada@example.com']);
+        $this->repository->insert(['name' => 'Grace', 'email' => 'grace@example.com']);
+
+        $affected = $this->repository->deleteBulk(['name' => 'Ada']);
+
+        self::assertSame(1, $affected);
+        self::assertCount(1, $this->repository->findAll());
+    }
+
+    public function test_delete_bulk_with_no_criteria_deletes_all_rows(): void
+    {
+        $this->repository->insert(['name' => 'Ada', 'email' => 'ada@example.com']);
+        $this->repository->insert(['name' => 'Grace', 'email' => 'grace@example.com']);
+
+        $affected = $this->repository->deleteBulk([]);
+
+        self::assertSame(2, $affected);
+        self::assertCount(0, $this->repository->findAll());
+    }
 }

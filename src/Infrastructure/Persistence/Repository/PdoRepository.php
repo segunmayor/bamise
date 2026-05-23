@@ -76,6 +76,28 @@ final class PdoRepository implements RepositoryInterface
         return $this->execute($query) > 0;
     }
 
+    public function findAll(array $criteria = [], int $limit = 100, int $offset = 0): array
+    {
+        $query = $this->compiler->compileSelectAll($this->table, $criteria, $limit, $offset);
+
+        return $this->fetchAll($query);
+    }
+
+    public function updateBulk(array $criteria, array $data): int
+    {
+        $data = $this->compiler->whitelistColumns($this->fillable, $data);
+        $query = $this->compiler->compileUpdateWhere($this->table, $criteria, $data);
+
+        return $this->execute($query);
+    }
+
+    public function deleteBulk(array $criteria): int
+    {
+        $query = $this->compiler->compileDeleteWhere($this->table, $criteria);
+
+        return $this->execute($query);
+    }
+
     /**
      * @return array<string, mixed>|null
      */
@@ -98,5 +120,17 @@ final class PdoRepository implements RepositoryInterface
         $statement->execute($query->bindings);
 
         return $statement->rowCount();
+    }
+
+    /**
+     * @return list<array<string, mixed>>
+     */
+    private function fetchAll(CompiledQuery $query): array
+    {
+        $statement = $this->connection->pdo()->prepare($query->sql);
+        $statement->execute($query->bindings);
+        $rows = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        return is_array($rows) ? array_values($rows) : [];
     }
 }

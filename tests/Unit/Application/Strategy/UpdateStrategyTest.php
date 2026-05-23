@@ -47,15 +47,23 @@ final class UpdateStrategyTest extends TestCase
     {
         $captured = [];
         $repo = new class ($captured) implements RepositoryInterface {
-            public function __construct(private array &$captured) {}
-            public function find(ResourceId $id): ?array { return null; }
-            public function insert(array $data): ResourceId { return new ResourceId(1); }
+            public function __construct(private array &$captured)
+            {
+            }
+
+            public function find(ResourceId $id): ?array { unset($id); return null; }
+            public function insert(array $data): ResourceId { unset($data); return new ResourceId(1); }
             public function update(ResourceId $id, array $data): bool
             {
                 $this->captured = $data;
+
                 return true;
             }
-            public function delete(ResourceId $id): bool { return true; }
+
+            public function delete(ResourceId $id): bool { unset($id); return true; }
+            public function findAll(array $criteria = [], int $limit = 100, int $offset = 0): array { return []; }
+            public function updateBulk(array $criteria, array $data): int { return 0; }
+            public function deleteBulk(array $criteria): int { return 0; }
         };
 
         $def = new FakeResourceDefinition();
@@ -72,11 +80,17 @@ final class UpdateStrategyTest extends TestCase
     private function makeStrategy(bool $updated = true): UpdateStrategy
     {
         $repo = new class ($updated) implements RepositoryInterface {
-            public function __construct(private bool $updated) {}
-            public function find(ResourceId $id): ?array { return null; }
-            public function insert(array $data): ResourceId { return new ResourceId(1); }
-            public function update(ResourceId $id, array $data): bool { return $this->updated; }
-            public function delete(ResourceId $id): bool { return true; }
+            public function __construct(private bool $updated)
+            {
+            }
+
+            public function find(ResourceId $id): ?array { unset($id); return null; }
+            public function insert(array $data): ResourceId { unset($data); return new ResourceId(1); }
+            public function update(ResourceId $id, array $data): bool { unset($id, $data); return $this->updated; }
+            public function delete(ResourceId $id): bool { unset($id); return true; }
+            public function findAll(array $criteria = [], int $limit = 100, int $offset = 0): array { return []; }
+            public function updateBulk(array $criteria, array $data): int { return 0; }
+            public function deleteBulk(array $criteria): int { return 0; }
         };
 
         $def = new FakeResourceDefinition();

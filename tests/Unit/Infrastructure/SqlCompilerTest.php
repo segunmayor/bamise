@@ -30,6 +30,54 @@ final class SqlCompilerTest extends TestCase
         self::assertSame(['name' => 'Ada', 'email' => 'a@b.c'], $query->bindings);
     }
 
+    public function test_compile_select_all_with_no_criteria_appends_limit_offset(): void
+    {
+        $compiler = new SqlCompiler(new SqliteDialect());
+        $query = $compiler->compileSelectAll('posts', [], 50, 10);
+
+        self::assertSame('SELECT * FROM "posts" LIMIT 50 OFFSET 10', $query->sql);
+        self::assertSame([], $query->bindings);
+    }
+
+    public function test_compile_select_all_with_criteria_adds_where_clause(): void
+    {
+        $compiler = new SqlCompiler(new SqliteDialect());
+        $query = $compiler->compileSelectAll('posts', ['status' => 'active'], 100, 0);
+
+        self::assertStringContainsString('WHERE "status" = :__w_status', $query->sql);
+        self::assertSame('active', $query->bindings['__w_status']);
+    }
+
+    public function test_compile_update_where_with_criteria_builds_correct_sql(): void
+    {
+        $compiler = new SqlCompiler(new SqliteDialect());
+        $query = $compiler->compileUpdateWhere('posts', ['status' => 'draft'], ['title' => 'New']);
+
+        self::assertStringContainsString('UPDATE "posts" SET', $query->sql);
+        self::assertStringContainsString('"title" = :title', $query->sql);
+        self::assertStringContainsString('WHERE "status" = :__w_status', $query->sql);
+        self::assertSame('New', $query->bindings['title']);
+        self::assertSame('draft', $query->bindings['__w_status']);
+    }
+
+    public function test_compile_delete_where_with_criteria_builds_correct_sql(): void
+    {
+        $compiler = new SqlCompiler(new SqliteDialect());
+        $query = $compiler->compileDeleteWhere('posts', ['status' => 'archived']);
+
+        self::assertSame('DELETE FROM "posts" WHERE "status" = :__w_status', $query->sql);
+        self::assertSame('archived', $query->bindings['__w_status']);
+    }
+
+    public function test_compile_delete_where_with_no_criteria_deletes_all(): void
+    {
+        $compiler = new SqlCompiler(new SqliteDialect());
+        $query = $compiler->compileDeleteWhere('posts', []);
+
+        self::assertSame('DELETE FROM "posts"', $query->sql);
+        self::assertSame([], $query->bindings);
+    }
+
     public function test_whitelist_columns_filters_unknown_keys(): void
     {
         $compiler = new SqlCompiler(new SqliteDialect());

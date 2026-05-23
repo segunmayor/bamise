@@ -6,6 +6,8 @@ namespace Bamise\Tests\Unit\Application\Strategy;
 
 use Bamise\Application\Registry\RepositoryResolver;
 use Bamise\Application\Registry\ResourceRegistry;
+use Bamise\Application\Strategy\BulkDeleteStrategy;
+use Bamise\Application\Strategy\BulkUpdateStrategy;
 use Bamise\Application\Strategy\CreateStrategy;
 use Bamise\Application\Strategy\DeleteStrategy;
 use Bamise\Application\Strategy\OperationStrategyFactory;
@@ -42,14 +44,14 @@ final class OperationStrategyFactoryTest extends TestCase
         self::assertInstanceOf(DeleteStrategy::class, $this->factory()->for(OperationType::Delete));
     }
 
-    public function test_for_bulk_update_returns_update_strategy(): void
+    public function test_for_bulk_update_returns_bulk_update_strategy(): void
     {
-        self::assertInstanceOf(UpdateStrategy::class, $this->factory()->for(OperationType::BulkUpdate));
+        self::assertInstanceOf(BulkUpdateStrategy::class, $this->factory()->for(OperationType::BulkUpdate));
     }
 
-    public function test_for_bulk_delete_returns_delete_strategy(): void
+    public function test_for_bulk_delete_returns_bulk_delete_strategy(): void
     {
-        self::assertInstanceOf(DeleteStrategy::class, $this->factory()->for(OperationType::BulkDelete));
+        self::assertInstanceOf(BulkDeleteStrategy::class, $this->factory()->for(OperationType::BulkDelete));
     }
 
     public function test_custom_strategy_overrides_default(): void

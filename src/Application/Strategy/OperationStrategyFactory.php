@@ -31,8 +31,8 @@ final class OperationStrategyFactory implements OperationStrategyFactoryInterfac
             OperationType::Read->value => new ReadStrategy($repositories, $resources),
             OperationType::Update->value => new UpdateStrategy($repositories, $resources, $fillableGuard),
             OperationType::Delete->value => new DeleteStrategy($repositories, $resources),
-            OperationType::BulkUpdate->value => new UpdateStrategy($repositories, $resources, $fillableGuard),
-            OperationType::BulkDelete->value => new DeleteStrategy($repositories, $resources),
+            OperationType::BulkUpdate->value => new BulkUpdateStrategy($repositories, $resources, $fillableGuard),
+            OperationType::BulkDelete->value => new BulkDeleteStrategy($repositories),
         ];
 
         if ($strategies !== null) {

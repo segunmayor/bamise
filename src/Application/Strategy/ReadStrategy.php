@@ -28,20 +28,35 @@ final class ReadStrategy implements OperationStrategyInterface
             ?? $context->inputData['id']
             ?? null;
 
-        if ($idValue === null || $idValue === '') {
-            return $this->notFound($context);
+        if ($idValue !== null && $idValue !== '') {
+            $row = $repository->find(new ResourceId($idValue));
+
+            if ($row === null) {
+                return $this->notFound($context);
+            }
+
+            return new CrudResult(
+                success: true,
+                data: $row,
+                meta: ['operation' => $context->operation->value],
+            );
         }
 
-        $row = $repository->find(new ResourceId($idValue));
+        $reserved = [$primaryKey, 'id', 'limit', 'offset'];
+        $criteria = $this->extractCriteria($context->inputData, $reserved);
+        $limit = is_numeric($context->inputData['limit'] ?? null)
+            ? max(1, (int) $context->inputData['limit'])
+            : 100;
+        $offset = is_numeric($context->inputData['offset'] ?? null)
+            ? max(0, (int) $context->inputData['offset'])
+            : 0;
 
-        if ($row === null) {
-            return $this->notFound($context);
-        }
+        $rows = $repository->findAll($criteria, $limit, $offset);
 
         return new CrudResult(
             success: true,
-            data: $row,
-            meta: ['operation' => $context->operation->value],
+            data: ['items' => $rows],
+            meta: ['operation' => $context->operation->value, 'count' => count($rows)],
         );
     }
 
@@ -52,5 +67,24 @@ final class ReadStrategy implements OperationStrategyInterface
             errors: ['message' => 'Resource not found'],
             meta: ['operation' => $context->operation->value],
         );
+    }
+
+    /**
+     * @param array<string, mixed> $inputData
+     * @param list<string>         $exclude
+     *
+     * @return array<string, mixed>
+     */
+    private function extractCriteria(array $inputData, array $exclude): array
+    {
+        $criteria = [];
+
+        foreach ($inputData as $key => $value) {
+            if (! in_array($key, $exclude, true)) {
+                $criteria[$key] = $value;
+            }
+        }
+
+        return $criteria;
     }
 }

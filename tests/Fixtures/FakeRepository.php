@@ -34,4 +34,25 @@ final class FakeRepository implements RepositoryInterface
 
         return true;
     }
+
+    public function findAll(array $criteria = [], int $limit = 100, int $offset = 0): array
+    {
+        unset($criteria, $limit, $offset);
+
+        return [];
+    }
+
+    public function updateBulk(array $criteria, array $data): int
+    {
+        unset($criteria, $data);
+
+        return 0;
+    }
+
+    public function deleteBulk(array $criteria): int
+    {
+        unset($criteria);
+
+        return 0;
+    }
 }
