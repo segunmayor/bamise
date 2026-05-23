@@ -84,4 +84,16 @@ final class BearerTokenAuthAdapterTest extends TestCase
 
         self::assertInstanceOf(AuthSubjectDto::class, $result);
     }
+
+    public function test_subject_is_cleared_on_subsequent_unauthenticated_request(): void
+    {
+        $adapter = new BearerTokenAuthAdapter();
+        $adapter->authenticate(new FakeCrudRequest(headers: ['Authorization' => 'Bearer 42']));
+
+        self::assertNotNull($adapter->subject());
+
+        $adapter->authenticate(new FakeCrudRequest());
+
+        self::assertNull($adapter->subject());
+    }
 }

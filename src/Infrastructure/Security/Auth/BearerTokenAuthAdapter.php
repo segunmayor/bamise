@@ -23,6 +23,8 @@ final class BearerTokenAuthAdapter implements AuthPortInterface
 
     public function authenticate(CrudRequestInterface $request): ?object
     {
+        $this->resolvedSubject = null;
+
         $header = $this->authorizationHeader($request);
         if ($header === null) {
             return null;

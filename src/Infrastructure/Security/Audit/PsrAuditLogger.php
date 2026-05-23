@@ -10,10 +10,17 @@ use Psr\Log\LoggerInterface;
 
 final class PsrAuditLogger implements AuditLoggerPortInterface
 {
+    /** @var list<string> */
+    private readonly array $normalizedRedactFields;
+
     public function __construct(
         private readonly LoggerInterface $logger,
-        private readonly AuditConfig $config,
+        AuditConfig $config,
     ) {
+        $this->normalizedRedactFields = array_map(
+            static fn (string $field): string => strtolower($field),
+            $config->redactFields,
+        );
     }
 
     public function log(AuditRecord $record): void
@@ -46,7 +53,7 @@ final class PsrAuditLogger implements AuditLoggerPortInterface
         $redacted = [];
 
         foreach ($data as $key => $value) {
-            if (in_array(strtolower((string) $key), $this->normalizedRedactFields(), true)) {
+            if (in_array(strtolower((string) $key), $this->normalizedRedactFields, true)) {
                 $redacted[$key] = '[REDACTED]';
 
                 continue;
@@ -65,14 +72,4 @@ final class PsrAuditLogger implements AuditLoggerPortInterface
         return $redacted;
     }
 
-    /**
-     * @return list<string>
-     */
-    private function normalizedRedactFields(): array
-    {
-        return array_map(
-            static fn (string $field): string => strtolower($field),
-            $this->config->redactFields,
-        );
-    }
 }

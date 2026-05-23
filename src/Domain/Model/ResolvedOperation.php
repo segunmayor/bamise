@@ -20,9 +20,7 @@ readonly class ResolvedOperation
     {
         return match ($this->operation) {
             OperationType::Update,
-            OperationType::Delete,
-            OperationType::BulkUpdate,
-            OperationType::BulkDelete => true,
+            OperationType::Delete => true,
             default => false,
         };
     }

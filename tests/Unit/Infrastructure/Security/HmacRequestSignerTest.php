@@ -98,6 +98,24 @@ final class HmacRequestSignerTest extends TestCase
         self::assertFalse($signer->verify($request));
     }
 
+    public function test_empty_secret_rejects_all_requests(): void
+    {
+        $signer = new HmacRequestSigner(new InMemoryCache(), new SigningConfig(secret: ''));
+
+        $request = new FakeCrudRequest(
+            'GET',
+            '/',
+            [],
+            [
+                'X-Bamise-Timestamp' => (string) time(),
+                'X-Bamise-Nonce' => 'any-nonce',
+                'X-Bamise-Signature' => 'any-signature',
+            ],
+        );
+
+        self::assertFalse($signer->verify($request));
+    }
+
     private function signer(): HmacRequestSigner
     {
         return new HmacRequestSigner(

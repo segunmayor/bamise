@@ -29,7 +29,25 @@ final class CsrfServiceTest extends TestCase
         );
 
         self::assertTrue($service->validate($request));
-        self::assertTrue($service->verify($token, $sessionId));
+    }
+
+    public function test_token_is_consumed_after_validation_preventing_replay(): void
+    {
+        $service = $this->service();
+        $sessionId = 'sess-replay';
+        $token = $service->generateForSession($sessionId);
+
+        $request = new FakeCrudRequest(
+            'POST',
+            '/users',
+            [
+                '_session_id' => $sessionId,
+                '_csrf' => $token,
+            ],
+        );
+
+        self::assertTrue($service->validate($request));
+        self::assertFalse($service->validate($request));
     }
 
     public function test_invalid_token_fails_validation(): void

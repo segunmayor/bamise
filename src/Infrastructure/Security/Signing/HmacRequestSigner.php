@@ -20,6 +20,10 @@ final class HmacRequestSigner implements RequestSignerPortInterface
 
     public function verify(CrudRequestInterface $request): bool
     {
+        if ($this->config->secret === '') {
+            return false;
+        }
+
         $timestamp = $this->headerValue($request, $this->config->timestampHeader);
         $nonce = $this->headerValue($request, $this->config->nonceHeader);
         $signature = $this->headerValue($request, $this->config->signatureHeader);

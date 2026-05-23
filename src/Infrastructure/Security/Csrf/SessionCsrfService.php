@@ -50,13 +50,20 @@ final class SessionCsrfService implements CsrfPortInterface
 
     public function verify(string $token, string $sessionId): bool
     {
-        $stored = $this->cache->get($this->cacheKey($sessionId));
+        $key = $this->cacheKey($sessionId);
+        $stored = $this->cache->get($key);
 
         if (! is_string($stored) || $stored === '') {
             return false;
         }
 
-        return hash_equals($stored, $token);
+        if (! hash_equals($stored, $token)) {
+            return false;
+        }
+
+        $this->cache->delete($key);
+
+        return true;
     }
 
     private function cacheKey(string $sessionId): string
