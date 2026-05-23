@@ -14,6 +14,7 @@ use Bamise\Application\Response\ResponseMapper;
 use Bamise\Contract\CrudHandlerInterface;
 use Bamise\Contract\Enum\ResponseMode;
 use Bamise\Contract\Http\CrudRequestInterface;
+use Bamise\Contract\ValueObject\RouteOperationConfig;
 use Bamise\Domain\Model\Resource;
 use Bamise\Domain\Service\OperationResolver;
 use Throwable;
@@ -35,6 +36,7 @@ final class CrudApplication
         CrudRequestInterface $request,
         string $resourceName,
         ?ResponseMode $mode = null,
+        ?RouteOperationConfig $routeConfig = null,
     ): ResponseEnvelope {
         try {
             $definition = $this->resourceRegistry->get($resourceName);
@@ -43,7 +45,7 @@ final class CrudApplication
                 $definition->table(),
                 $definition->primaryKey(),
             );
-            $resolved = $this->operationResolver->resolve($request, $resource);
+            $resolved = $this->operationResolver->resolve($request, $resource, null, $routeConfig);
             $context = $this->contextFactory->create($resolved, $request);
             $state = new PipelineState($context, $resolved, $definition);
             $result = $this->pipeline->handle($this->contextFactory->fromState($state));

@@ -29,4 +29,21 @@ final class OperationTypeMapper
 
         return OperationType::tryFrom($normalized);
     }
+
+    /**
+     * Returns every OperationType that is semantically valid for the given HTTP method.
+     * This is the hard boundary that client hints cannot cross.
+     *
+     * @return list<OperationType>
+     */
+    public function compatibleOperations(string $method): array
+    {
+        return match (strtoupper($method)) {
+            'GET'          => [OperationType::Read],
+            'POST'         => [OperationType::Create],
+            'PUT', 'PATCH' => [OperationType::Update, OperationType::BulkUpdate],
+            'DELETE'       => [OperationType::Delete, OperationType::BulkDelete],
+            default        => [],
+        };
+    }
 }
