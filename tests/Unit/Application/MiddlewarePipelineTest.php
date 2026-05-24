@@ -69,6 +69,25 @@ final class MiddlewarePipelineTest extends TestCase
         self::assertSame(['a', 'b', 'c', 'terminal'], self::$executionOrder);
     }
 
+    public function test_plain_middleware_priority_is_exactly_index_times_100(): void
+    {
+        $pipeline = new MiddlewarePipeline(
+            [new RecordingMiddleware('a'), new RecordingMiddleware('b')],
+            new TerminalHandler(),
+        );
+
+        $ref  = new \ReflectionClass($pipeline);
+        $prop = $ref->getProperty('middleware');
+        $prop->setAccessible(true);
+        /** @var list<PrioritizedMiddleware> $sorted */
+        $sorted = $prop->getValue($pipeline);
+
+        // Sorted ascending: [index=0 → priority=0, index=1 → priority=100].
+        // Kills DecrementInteger (* 99) and IncrementInteger (* 101) on the multiplier.
+        self::assertSame(0, $sorted[0]->priority);
+        self::assertSame(100, $sorted[1]->priority);
+    }
+
     public function test_context_modification_propagates_to_downstream_middleware(): void
     {
         $capturedResourceName = null;

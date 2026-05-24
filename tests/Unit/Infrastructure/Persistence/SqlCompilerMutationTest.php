@@ -58,10 +58,19 @@ final class SqlCompilerMutationTest extends TestCase
 
     public function test_compile_update_with_empty_data_throws(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessageMatches('/Update requires/');
+        // Using try/catch/fail instead of expectException so Infection sees a real
+        // assertion failure (not just a PHPUnit "risky" marker) when the throw is removed.
+        $caught = null;
+        try {
+            $this->compiler->compileUpdate('t', 'id', 1, []);
+            self::fail('Expected InvalidArgumentException for empty data array.');
+        } catch (\InvalidArgumentException $e) {
+            $caught = $e;
+        }
 
-        $this->compiler->compileUpdate('t', 'id', 1, []);
+        self::assertNotNull($caught);
+        // Must match the first guard ("at least one column") not the second ("at least one mutable column").
+        self::assertMatchesRegularExpression('/Update requires at least one column\./', $caught->getMessage());
     }
 
     // ── Line 72: Continue_ → break — primary key skipped, others included ────

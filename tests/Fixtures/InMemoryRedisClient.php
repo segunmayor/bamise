@@ -33,7 +33,7 @@ final class InMemoryRedisClient implements RedisClientInterface
     #[\Override]
     public function evalScript(string $script, array $keys, array $args): mixed
     {
-        $this->purgeExpired();
+        $this->purgeExpired((int) ($args[0] ?? 0));
         $key = $keys[0] ?? '';
 
         if (str_contains($script, 'ZADD')) {
@@ -84,8 +84,9 @@ final class InMemoryRedisClient implements RedisClientInterface
         // ZADD key nowMs member
         $this->zsets[$key][$member] = (float) $nowMs;
 
-        // PEXPIRE key winMs
-        $this->expiry[$key] = $nowMs + $winMs;
+        // PEXPIRE key winMs — use PHP_INT_MAX so TTL-based purge never fires in tests;
+        // ZREMRANGEBYSCORE in runAttempt is the authoritative eviction mechanism.
+        $this->expiry[$key] = PHP_INT_MAX;
 
         return [1, $limit - $count - 1];
     }
@@ -113,11 +114,10 @@ final class InMemoryRedisClient implements RedisClientInterface
         return max(0, $limit - $count);
     }
 
-    private function purgeExpired(): void
+    private function purgeExpired(int $nowMs): void
     {
-        $nowMs = (int) (microtime(true) * 1_000);
         foreach ($this->expiry as $key => $expiryMs) {
-            if ($nowMs >= $expiryMs) {
+            if ($nowMs > $expiryMs) {
                 unset($this->zsets[$key], $this->expiry[$key]);
             }
         }

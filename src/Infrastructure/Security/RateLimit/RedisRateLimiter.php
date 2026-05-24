@@ -62,17 +62,26 @@ final class RedisRateLimiter implements RateLimiterPortInterface
         return rem
         LUA;
 
+    /** @var \Closure(): int */
+    private readonly \Closure $clock;
+
+    /**
+     * @param (\Closure(): int)|null $clock Millisecond clock; defaults to system microtime.
+     *                                      Inject a fixed clock in tests to control timestamps.
+     */
     public function __construct(
         private readonly RedisClientInterface $redis,
         private readonly RateLimitConfig $config,
+        ?\Closure $clock = null,
     ) {
+        $this->clock = $clock ?? static fn(): int => (int) (microtime(true) * 1_000);
     }
 
     #[\Override]
     public function attempt(string $key): bool
     {
         $cacheKey = self::KEY_PREFIX . $key;
-        $nowMs    = (int) (microtime(true) * 1_000);
+        $nowMs    = ($this->clock)();
         $winMs    = $this->config->windowSeconds * 1_000;
         $member   = $nowMs . ':' . bin2hex(random_bytes(8));
 
@@ -89,7 +98,7 @@ final class RedisRateLimiter implements RateLimiterPortInterface
     public function remaining(string $key): int
     {
         $cacheKey = self::KEY_PREFIX . $key;
-        $nowMs    = (int) (microtime(true) * 1_000);
+        $nowMs    = ($this->clock)();
         $winMs    = $this->config->windowSeconds * 1_000;
 
         $raw = $this->redis->evalScript(
