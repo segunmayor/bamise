@@ -73,14 +73,37 @@ final class UpdateDeleteStrategyMutationTest extends TestCase
     private function updatingRepo(bool $success): RepositoryInterface
     {
         return new class ($success) implements RepositoryInterface {
-            public function __construct(private bool $s) {}
-            public function find(ResourceId $id): ?array { return null; }
-            public function insert(array $data): ResourceId { return new ResourceId(1); }
-            public function update(ResourceId $id, array $data): bool { return $this->s; }
-            public function delete(ResourceId $id): bool { return $this->s; }
-            public function findAll(array $criteria = [], int $limit = 100, int $offset = 0): array { return []; }
-            public function updateBulk(array $criteria, array $data): int { return count($data); }
-            public function deleteBulk(array $criteria): int { return 2; }
+            public function __construct(private bool $s)
+            {
+            }
+            public function find(ResourceId $id): ?array
+            {
+                return null;
+            }
+            public function insert(array $data): ResourceId
+            {
+                return new ResourceId(1);
+            }
+            public function update(ResourceId $id, array $data): bool
+            {
+                return $this->s;
+            }
+            public function delete(ResourceId $id): bool
+            {
+                return $this->s;
+            }
+            public function findAll(array $criteria = [], int $limit = 100, int $offset = 0): array
+            {
+                return [];
+            }
+            public function updateBulk(array $criteria, array $data): int
+            {
+                return count($data);
+            }
+            public function deleteBulk(array $criteria): int
+            {
+                return 2;
+            }
         };
     }
 

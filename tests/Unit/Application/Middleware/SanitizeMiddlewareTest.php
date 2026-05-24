@@ -29,7 +29,9 @@ final class SanitizeMiddlewareTest extends TestCase
         $middleware = new SanitizeMiddleware($sanitizer, new CrudContextFactory());
         $capturedContext = null;
         $next = new class ($capturedContext) implements CrudHandlerInterface {
-            public function __construct(private mixed &$capturedContext) {}
+            public function __construct(private mixed &$capturedContext)
+            {
+            }
             public function handle(CrudContext $context): CrudResult
             {
                 $this->capturedContext = $context;
@@ -58,8 +60,13 @@ final class SanitizeMiddlewareTest extends TestCase
         $result = $middleware->process(
             new CrudContext(OperationType::Create, 'users', [], null, new FakeCrudRequest()),
             new class ($expected) implements CrudHandlerInterface {
-                public function __construct(private CrudResult $result) {}
-                public function handle(CrudContext $context): CrudResult { return $this->result; }
+                public function __construct(private CrudResult $result)
+                {
+                }
+                public function handle(CrudContext $context): CrudResult
+                {
+                    return $this->result;
+                }
             },
         );
 

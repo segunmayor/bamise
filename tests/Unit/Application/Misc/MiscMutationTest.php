@@ -148,8 +148,13 @@ final class MiscMutationTest extends TestCase
         $dispatcher = new FakeEventDispatcherPort();
         $innerResult = new CrudResult(success: true, data: ['id' => 1]);
         $inner = new class ($innerResult) implements CrudHandlerInterface {
-            public function __construct(private CrudResult $r) {}
-            public function handle(CrudContext $c): CrudResult { return $this->r; }
+            public function __construct(private CrudResult $r)
+            {
+            }
+            public function handle(CrudContext $c): CrudResult
+            {
+                return $this->r;
+            }
         };
         $orchestrator = new CrudOrchestrator(
             $dispatcher,

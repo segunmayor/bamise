@@ -69,8 +69,12 @@ final class PsrAuditLoggerTest extends TestCase
         $audit = new PsrAuditLogger($logger, $config);
 
         $record = new AuditRecord(
-            actor: null, action: 'update', resource: 'users',
-            recordId: null, ip: null, userAgent: null,
+            actor: null,
+            action: 'update',
+            resource: 'users',
+            recordId: null,
+            ip: null,
+            userAgent: null,
             after: ['Password' => 'secret'],
         );
 

@@ -29,7 +29,9 @@ final class AuthenticationMiddlewareTest extends TestCase
 
         $capturedContext = null;
         $next = new class ($capturedContext) implements CrudHandlerInterface {
-            public function __construct(private mixed &$capturedContext) {}
+            public function __construct(private mixed &$capturedContext)
+            {
+            }
             public function handle(CrudContext $context): CrudResult
             {
                 $this->capturedContext = $context;
@@ -60,7 +62,9 @@ final class AuthenticationMiddlewareTest extends TestCase
 
         $capturedContext = null;
         $next = new class ($capturedContext) implements CrudHandlerInterface {
-            public function __construct(private mixed &$capturedContext) {}
+            public function __construct(private mixed &$capturedContext)
+            {
+            }
             public function handle(CrudContext $context): CrudResult
             {
                 $this->capturedContext = $context;

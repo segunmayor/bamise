@@ -44,7 +44,9 @@ final class SubscriberLoaderMutationTest extends TestCase
     public function test_anonymous_class_without_interface_throws(): void
     {
         $notASubscriber = new class {
-            public function handle(): void {}
+            public function handle(): void
+            {
+            }
         };
 
         $this->expectException(InvalidArgumentException::class);
@@ -62,7 +64,9 @@ final class SubscriberLoaderMutationTest extends TestCase
                 return ['SomeEvent' => 'onSomeEvent'];
             }
 
-            public function onSomeEvent(object $event): void {}
+            public function onSomeEvent(object $event): void
+            {
+            }
         };
 
         $this->loader->load($this->dispatcher, $subscriber);
@@ -82,7 +86,9 @@ final class SubscriberLoaderMutationTest extends TestCase
                 return ['OrderPlaced' => ['handleOrder', 50]];
             }
 
-            public function handleOrder(object $event): void {}
+            public function handleOrder(object $event): void
+            {
+            }
         };
 
         $this->loader->load($this->dispatcher, $subscriber);
@@ -100,7 +106,9 @@ final class SubscriberLoaderMutationTest extends TestCase
                 return ['UserCreated' => ['onUserCreated']];
             }
 
-            public function onUserCreated(object $event): void {}
+            public function onUserCreated(object $event): void
+            {
+            }
         };
 
         $this->loader->load($this->dispatcher, $subscriber);
@@ -165,7 +173,9 @@ final class SubscriberLoaderMutationTest extends TestCase
                 return [\stdClass::class => 'handle'];
             }
 
-            public function handle(object $event): void {}
+            public function handle(object $event): void
+            {
+            }
         };
 
         $this->loader->load($this->dispatcher, $subscriber);
@@ -217,9 +227,13 @@ final class SubscriberLoaderMutationTest extends TestCase
                 ];
             }
 
-            public function onA(object $event): void {}
+            public function onA(object $event): void
+            {
+            }
 
-            public function onB(object $event): void {}
+            public function onB(object $event): void
+            {
+            }
         };
 
         $this->loader->load($this->dispatcher, $subscriber);

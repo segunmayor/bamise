@@ -36,7 +36,9 @@ final class AuditMiddlewareMutationTest extends TestCase
     {
         $logger = new class ($this->logged) implements AuditLoggerPortInterface {
             /** @param list<AuditRecord> $log */
-            public function __construct(private array &$log) {}
+            public function __construct(private array &$log)
+            {
+            }
 
             public function log(AuditRecord $record): void
             {
@@ -65,7 +67,9 @@ final class AuditMiddlewareMutationTest extends TestCase
     private function nextWith(CrudResult $result): CrudHandlerInterface
     {
         return new class ($result) implements CrudHandlerInterface {
-            public function __construct(private CrudResult $r) {}
+            public function __construct(private CrudResult $r)
+            {
+            }
 
             public function handle(CrudContext $c): CrudResult
             {

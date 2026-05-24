@@ -19,13 +19,23 @@ final class StrategyDispatchHandlerTest extends TestCase
     {
         $expected = new CrudResult(success: true, data: ['id' => 1]);
         $strategy = new class ($expected) implements OperationStrategyInterface {
-            public function __construct(private CrudResult $result) {}
-            public function execute(CrudContext $context): CrudResult { return $this->result; }
+            public function __construct(private CrudResult $result)
+            {
+            }
+            public function execute(CrudContext $context): CrudResult
+            {
+                return $this->result;
+            }
         };
 
         $factory = new class ($strategy) implements OperationStrategyFactoryInterface {
-            public function __construct(private OperationStrategyInterface $strategy) {}
-            public function for(OperationType $operation): OperationStrategyInterface { return $this->strategy; }
+            public function __construct(private OperationStrategyInterface $strategy)
+            {
+            }
+            public function for(OperationType $operation): OperationStrategyInterface
+            {
+                return $this->strategy;
+            }
         };
 
         $handler = new StrategyDispatchHandler($factory);
@@ -46,7 +56,9 @@ final class StrategyDispatchHandlerTest extends TestCase
     {
         $capturedContext = null;
         $strategy = new class ($capturedContext) implements OperationStrategyInterface {
-            public function __construct(private mixed &$capturedContext) {}
+            public function __construct(private mixed &$capturedContext)
+            {
+            }
             public function execute(CrudContext $context): CrudResult
             {
                 $this->capturedContext = $context;
@@ -55,8 +67,13 @@ final class StrategyDispatchHandlerTest extends TestCase
         };
 
         $factory = new class ($strategy) implements OperationStrategyFactoryInterface {
-            public function __construct(private OperationStrategyInterface $strategy) {}
-            public function for(OperationType $operation): OperationStrategyInterface { return $this->strategy; }
+            public function __construct(private OperationStrategyInterface $strategy)
+            {
+            }
+            public function for(OperationType $operation): OperationStrategyInterface
+            {
+                return $this->strategy;
+            }
         };
 
         $context = new CrudContext(

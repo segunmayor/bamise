@@ -46,7 +46,9 @@ final class RedisRateLimiterWindowBoundaryTest extends TestCase
     {
         $ms     = 0;
         $redis  = new InMemoryRedisClient();
-        $clock  = static function () use (&$ms): int { return $ms; };
+        $clock  = static function () use (&$ms): int {
+            return $ms;
+        };
         $config = new RateLimitConfig(maxAttempts: 1, windowSeconds: 1);
         $limit  = new RedisRateLimiter($redis, $config, $clock);
 
@@ -70,7 +72,9 @@ final class RedisRateLimiterWindowBoundaryTest extends TestCase
     {
         $ms     = 0;
         $redis  = new InMemoryRedisClient();
-        $clock  = static function () use (&$ms): int { return $ms; };
+        $clock  = static function () use (&$ms): int {
+            return $ms;
+        };
         $config = new RateLimitConfig(maxAttempts: 1, windowSeconds: 1);
         $limit  = new RedisRateLimiter($redis, $config, $clock);
 
@@ -93,7 +97,9 @@ final class RedisRateLimiterWindowBoundaryTest extends TestCase
     {
         $ms     = 0;
         $redis  = new InMemoryRedisClient();
-        $clock  = static function () use (&$ms): int { return $ms; };
+        $clock  = static function () use (&$ms): int {
+            return $ms;
+        };
         $config = new RateLimitConfig(maxAttempts: 1, windowSeconds: 1);
         $limit  = new RedisRateLimiter($redis, $config, $clock);
 
@@ -116,7 +122,9 @@ final class RedisRateLimiterWindowBoundaryTest extends TestCase
     {
         $ms     = 0;
         $redis  = new InMemoryRedisClient();
-        $clock  = static function () use (&$ms): int { return $ms; };
+        $clock  = static function () use (&$ms): int {
+            return $ms;
+        };
         $config = new RateLimitConfig(maxAttempts: 1, windowSeconds: 1);
         $limit  = new RedisRateLimiter($redis, $config, $clock);
 

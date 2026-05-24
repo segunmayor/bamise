@@ -67,7 +67,8 @@ final class EncoderRegistrarPriorityMutationTest extends TestCase
     public function test_registry_add_default_priority_is_zero(): void
     {
         $registry = new ListenerRegistry();
-        $registry->add(\stdClass::class, function () {});
+        $registry->add(\stdClass::class, function () {
+        });
 
         $listeners = $registry->forEvent(new \stdClass());
 
@@ -77,7 +78,8 @@ final class EncoderRegistrarPriorityMutationTest extends TestCase
     public function test_registry_add_default_priority_is_not_negative_one(): void
     {
         $registry = new ListenerRegistry();
-        $registry->add(\stdClass::class, function () {});
+        $registry->add(\stdClass::class, function () {
+        });
 
         $listeners = $registry->forEvent(new \stdClass());
 
@@ -87,7 +89,8 @@ final class EncoderRegistrarPriorityMutationTest extends TestCase
     public function test_registry_add_default_priority_is_not_one(): void
     {
         $registry = new ListenerRegistry();
-        $registry->add(\stdClass::class, function () {});
+        $registry->add(\stdClass::class, function () {
+        });
 
         $listeners = $registry->forEvent(new \stdClass());
 
@@ -102,7 +105,8 @@ final class EncoderRegistrarPriorityMutationTest extends TestCase
         $dispatcher = new SyncEventDispatcher($registry);
 
         // Call subscribe() without priority argument (uses default)
-        $dispatcher->subscribe(\stdClass::class, function () {});
+        $dispatcher->subscribe(\stdClass::class, function () {
+        });
 
         $listeners = $registry->forEvent(new \stdClass());
 
@@ -113,7 +117,8 @@ final class EncoderRegistrarPriorityMutationTest extends TestCase
     {
         $registry = new ListenerRegistry();
         $dispatcher = new SyncEventDispatcher($registry);
-        $dispatcher->subscribe(\stdClass::class, function () {});
+        $dispatcher->subscribe(\stdClass::class, function () {
+        });
 
         $listeners = $registry->forEvent(new \stdClass());
 
@@ -127,7 +132,8 @@ final class EncoderRegistrarPriorityMutationTest extends TestCase
         $registry = new ListenerRegistry();
         $dispatcher = new SyncEventDispatcher($registry);
 
-        $dispatcher->subscribeAsync(AfterCreate::class, function () {});
+        $dispatcher->subscribeAsync(AfterCreate::class, function () {
+        });
 
         $listeners = $registry->forEvent($this->makeEvent());
 
@@ -143,7 +149,8 @@ final class EncoderRegistrarPriorityMutationTest extends TestCase
         $registrar = new AsyncListenerRegistrar($dispatcher);
 
         // Call subscribe() without priority (uses default)
-        $registrar->subscribe(AfterCreate::class, function () {});
+        $registrar->subscribe(AfterCreate::class, function () {
+        });
 
         $listeners = $registry->forEvent($this->makeEvent());
 
@@ -156,7 +163,8 @@ final class EncoderRegistrarPriorityMutationTest extends TestCase
         $dispatcher = new SyncEventDispatcher($registry);
         $registrar = new AsyncListenerRegistrar($dispatcher);
 
-        $registrar->subscribe(AfterCreate::class, function () {});
+        $registrar->subscribe(AfterCreate::class, function () {
+        });
 
         $listeners = $registry->forEvent($this->makeEvent());
 
@@ -169,7 +177,8 @@ final class EncoderRegistrarPriorityMutationTest extends TestCase
         $dispatcher = new SyncEventDispatcher($registry);
         $registrar = new AsyncListenerRegistrar($dispatcher);
 
-        $registrar->subscribe(AfterCreate::class, function () {});
+        $registrar->subscribe(AfterCreate::class, function () {
+        });
 
         $listeners = $registry->forEvent($this->makeEvent());
 
@@ -184,7 +193,8 @@ final class EncoderRegistrarPriorityMutationTest extends TestCase
         $syncCalled = false;
 
         // Register async listener at higher priority (runs first in sorted order)
-        $registry->add(AfterCreate::class, function () {}, priority: 100, async: true);
+        $registry->add(AfterCreate::class, function () {
+        }, priority: 100, async: true);
         // Register sync listener at lower priority
         $registry->add(AfterCreate::class, function () use (&$syncCalled) {
             $syncCalled = true;

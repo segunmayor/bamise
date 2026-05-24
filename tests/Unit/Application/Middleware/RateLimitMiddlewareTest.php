@@ -39,9 +39,18 @@ final class RateLimitMiddlewareTest extends TestCase
     {
         $captured = null;
         $limiter = new class ($captured) implements RateLimiterPortInterface {
-            public function __construct(private mixed &$captured) {}
-            public function attempt(string $key): bool { $this->captured = $key; return true; }
-            public function remaining(string $key): int { return 10; }
+            public function __construct(private mixed &$captured)
+            {
+            }
+            public function attempt(string $key): bool
+            {
+                $this->captured = $key;
+                return true;
+            }
+            public function remaining(string $key): int
+            {
+                return 10;
+            }
         };
 
         $context = new CrudContext(
@@ -71,7 +80,10 @@ final class RateLimitMiddlewareTest extends TestCase
     private function okHandler(): CrudHandlerInterface
     {
         return new class implements CrudHandlerInterface {
-            public function handle(CrudContext $context): CrudResult { return new CrudResult(success: true); }
+            public function handle(CrudContext $context): CrudResult
+            {
+                return new CrudResult(success: true);
+            }
         };
     }
 }

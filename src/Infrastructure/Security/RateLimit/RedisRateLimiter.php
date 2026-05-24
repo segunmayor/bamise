@@ -74,7 +74,7 @@ final class RedisRateLimiter implements RateLimiterPortInterface
         private readonly RateLimitConfig $config,
         ?\Closure $clock = null,
     ) {
-        $this->clock = $clock ?? static fn(): int => (int) (microtime(true) * 1_000);
+        $this->clock = $clock ?? static fn(): int => (int) (microtime(true) * 1_000.0);
     }
 
     #[\Override]

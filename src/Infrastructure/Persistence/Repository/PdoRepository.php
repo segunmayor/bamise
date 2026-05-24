@@ -58,7 +58,16 @@ final class PdoRepository implements RepositoryInterface
         $this->execute($query);
         $lastId = $this->connection->pdo()->lastInsertId();
 
-        if ($lastId === false || $lastId === '0') {
+        /**
+         * PHPStan types lastInsertId() as string|false; Psalm types it as string.
+         * is_string() guard satisfies PHPStan; psalm-suppress handles Psalm's view.
+         *
+         * @psalm-suppress TypeDoesNotContainType
+         * @psalm-suppress RedundantCondition
+         */
+        $lastIdStr = is_string($lastId) ? $lastId : '';
+
+        if ($lastIdStr === '' || $lastIdStr === '0') {
             if (array_key_exists($this->primaryKey, $data)) {
                 $pkFallback = $data[$this->primaryKey];
 
@@ -72,7 +81,7 @@ final class PdoRepository implements RepositoryInterface
             throw new \RuntimeException('Unable to resolve inserted primary key.');
         }
 
-        return new ResourceId(is_numeric($lastId) ? (int) $lastId : $lastId);
+        return new ResourceId(is_numeric($lastIdStr) ? (int) $lastIdStr : $lastIdStr);
     }
 
     #[\Override]
@@ -151,13 +160,36 @@ final class PdoRepository implements RepositoryInterface
 
     /**
      * @return list<array<string, mixed>>
+     * @psalm-suppress TypeDoesNotContainType PDOStatement::fetchAll stubs differ between PHPStan and Psalm
      */
     private function fetchAll(CompiledQuery $query): array
     {
         $statement = $this->connection->pdo()->prepare($query->sql);
         $statement->execute($query->bindings);
-        $rows = $statement->fetchAll(PDO::FETCH_ASSOC);
+        $rawRows = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-        return is_array($rows) ? array_values($rows) : [];
+        if ($rawRows === false) {
+            return [];
+        }
+
+        $result = [];
+
+        foreach ($rawRows as $rawRow) {
+            if (! is_array($rawRow)) {
+                continue;
+            }
+
+            $row = [];
+
+            foreach ($rawRow as $key => $value) {
+                if (is_string($key)) {
+                    $row[$key] = $value;
+                }
+            }
+
+            $result[] = $row;
+        }
+
+        return $result;
     }
 }

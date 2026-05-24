@@ -33,11 +33,12 @@ final class SubjectFactory
                 throw new InvalidArgumentException('Auth subject id must be string or int.');
             }
 
+            $toStr = static fn (mixed $v): string => is_scalar($v) || $v === null ? (string) $v : '';
             $roles = method_exists($authSubject, 'roles')
-                ? array_values(array_map('strval', (array) $authSubject->roles()))
+                ? array_values(array_map($toStr, (array) $authSubject->roles()))
                 : [];
             $permissions = method_exists($authSubject, 'permissions')
-                ? array_values(array_map('strval', (array) $authSubject->permissions()))
+                ? array_values(array_map($toStr, (array) $authSubject->permissions()))
                 : [];
 
             return new Subject($id, $roles, $permissions);

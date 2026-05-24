@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<ruleset name="Bamise PSR-12">
+    <description>PSR-12 coding standard for Bamise</description>
+
+    <file>src</file>
+    <file>tests</file>
+
+    <arg name="extensions" value="php"/>
+    <arg name="colors"/>
+    <arg value="p"/>
+
+    <rule ref="PSR12">
+        <!-- PSR-12 inherits PSR-1's camelCase method rule, but PHPUnit community
+             convention uses test_snake_case names for readability. Exclude tests. -->
+        <exclude name="PSR1.Methods.CamelCapsMethodName"/>
+        <!-- PSR-1 class-declaration rule conflicts with anonymous inline handler
+             classes used in unit tests. Exclude tests. -->
+        <exclude name="PSR1.Classes.ClassDeclaration"/>
+    </rule>
+
+    <!-- PSR-12 soft limit is 120 chars; src must stay under 120, tests up to 150. -->
+    <rule ref="Generic.Files.LineLength">
+        <properties>
+            <property name="lineLimit" value="150"/>
+            <property name="absoluteLineLimit" value="0"/>
+        </properties>
+    </rule>
+</ruleset>

@@ -75,7 +75,8 @@ final class SyncDispatcherAndRegistryMutationTest extends TestCase
     public function test_async_listener_without_queue_throws(): void
     {
         $registry = new ListenerRegistry();
-        $registry->add(AfterCreate::class, function () {}, priority: 0, async: true);
+        $registry->add(AfterCreate::class, function () {
+        }, priority: 0, async: true);
 
         $dispatcher = new SyncEventDispatcher($registry, queue: null);
 
@@ -88,7 +89,8 @@ final class SyncDispatcherAndRegistryMutationTest extends TestCase
     public function test_async_listener_with_queue_enqueues_job(): void
     {
         $registry = new ListenerRegistry();
-        $registry->add(AfterCreate::class, function () {}, priority: 0, async: true);
+        $registry->add(AfterCreate::class, function () {
+        }, priority: 0, async: true);
 
         $queue = new InMemoryQueue();
         $dispatcher = new SyncEventDispatcher($registry, queue: $queue);
@@ -127,8 +129,12 @@ final class SyncDispatcherAndRegistryMutationTest extends TestCase
         $registry = new ListenerRegistry();
         $order = [];
 
-        $registry->add(\stdClass::class, function () use (&$order) { $order[] = 'low'; }, priority: 10);
-        $registry->add(\stdClass::class, function () use (&$order) { $order[] = 'high'; }, priority: 100);
+        $registry->add(\stdClass::class, function () use (&$order) {
+            $order[] = 'low';
+        }, priority: 10);
+        $registry->add(\stdClass::class, function () use (&$order) {
+            $order[] = 'high';
+        }, priority: 100);
 
         $dispatcher = new SyncEventDispatcher($registry);
         $dispatcher->dispatch(new \stdClass());
@@ -159,8 +165,12 @@ final class SyncDispatcherAndRegistryMutationTest extends TestCase
         $registry = new ListenerRegistry();
         $count = 0;
 
-        $registry->add(\stdClass::class, function () use (&$count) { $count++; });
-        $registry->add(\stdClass::class, function () use (&$count) { $count++; });
+        $registry->add(\stdClass::class, function () use (&$count) {
+            $count++;
+        });
+        $registry->add(\stdClass::class, function () use (&$count) {
+            $count++;
+        });
 
         $dispatcher = new SyncEventDispatcher($registry);
         $dispatcher->dispatch(new \stdClass());
@@ -191,7 +201,9 @@ final class SyncDispatcherAndRegistryMutationTest extends TestCase
         $registry = new ListenerRegistry();
         $count = 0;
 
-        $registry->add(\stdClass::class, function () use (&$count) { $count++; });
+        $registry->add(\stdClass::class, function () use (&$count) {
+            $count++;
+        });
 
         // Dispatch once - if resolveEventTypes had duplicates without array_unique,
         // the listener could be called multiple times
@@ -208,9 +220,15 @@ final class SyncDispatcherAndRegistryMutationTest extends TestCase
         $registry = new ListenerRegistry();
         $order = [];
 
-        $registry->add(\stdClass::class, function () use (&$order) { $order[] = 'p10'; }, priority: 10);
-        $registry->add(\stdClass::class, function () use (&$order) { $order[] = 'p50'; }, priority: 50);
-        $registry->add(\stdClass::class, function () use (&$order) { $order[] = 'p30'; }, priority: 30);
+        $registry->add(\stdClass::class, function () use (&$order) {
+            $order[] = 'p10';
+        }, priority: 10);
+        $registry->add(\stdClass::class, function () use (&$order) {
+            $order[] = 'p50';
+        }, priority: 50);
+        $registry->add(\stdClass::class, function () use (&$order) {
+            $order[] = 'p30';
+        }, priority: 30);
 
         $listeners = $registry->forEvent(new \stdClass());
 
@@ -228,7 +246,8 @@ final class SyncDispatcherAndRegistryMutationTest extends TestCase
         $queue = new InMemoryQueue();
         $dispatcher = new SyncEventDispatcher($registry, queue: $queue);
 
-        $dispatcher->subscribeAsync(AfterCreate::class, function () {}, priority: 0);
+        $dispatcher->subscribeAsync(AfterCreate::class, function () {
+        }, priority: 0);
         $dispatcher->dispatch($this->makeEvent());
 
         self::assertSame(1, $queue->count());
@@ -239,7 +258,8 @@ final class SyncDispatcherAndRegistryMutationTest extends TestCase
     public function test_subscribe_default_priority_zero(): void
     {
         $registry = new ListenerRegistry();
-        $registry->add(\stdClass::class, function () {}, priority: 0);
+        $registry->add(\stdClass::class, function () {
+        }, priority: 0);
 
         $listeners = $registry->forEvent(new \stdClass());
 
@@ -249,7 +269,8 @@ final class SyncDispatcherAndRegistryMutationTest extends TestCase
     public function test_subscribe_explicit_priority_is_stored(): void
     {
         $registry = new ListenerRegistry();
-        $registry->add(\stdClass::class, function () {}, priority: 42);
+        $registry->add(\stdClass::class, function () {
+        }, priority: 42);
 
         $listeners = $registry->forEvent(new \stdClass());
 

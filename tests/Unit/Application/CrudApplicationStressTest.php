@@ -203,10 +203,12 @@ final class CrudApplicationStressTest extends TestCase
         }
 
         for ($i = 0; $i < 500; $i++) {
-            if (! $this->app->handle(
-                new FakeCrudRequest('POST', '/users', ['name' => "Batch{$i}"]),
-                'users',
-            )->success) {
+            if (
+                ! $this->app->handle(
+                    new FakeCrudRequest('POST', '/users', ['name' => "Batch{$i}"]),
+                    'users',
+                )->success
+            ) {
                 $failures++;
             }
         }

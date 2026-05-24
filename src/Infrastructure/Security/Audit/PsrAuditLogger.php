@@ -72,5 +72,4 @@ final class PsrAuditLogger implements AuditLoggerPortInterface
 
         return $redacted;
     }
-
 }

@@ -40,7 +40,10 @@ final class RateLimitAndAuthMutationTest extends TestCase
     private function passThrough(): CrudHandlerInterface
     {
         return new class implements CrudHandlerInterface {
-            public function handle(CrudContext $c): CrudResult { return new CrudResult(success: true); }
+            public function handle(CrudContext $c): CrudResult
+            {
+                return new CrudResult(success: true);
+            }
         };
     }
 
@@ -49,7 +52,9 @@ final class RateLimitAndAuthMutationTest extends TestCase
         return new class ($allows) implements RateLimiterPortInterface {
             public ?string $lastKey = null;
 
-            public function __construct(private bool $a) {}
+            public function __construct(private bool $a)
+            {
+            }
 
             public function attempt(string $key): bool
             {
@@ -58,8 +63,13 @@ final class RateLimitAndAuthMutationTest extends TestCase
                 return $this->a;
             }
 
-            public function remaining(string $key): int { return 0; }
-            public function reset(string $key): void {}
+            public function remaining(string $key): int
+            {
+                return 0;
+            }
+            public function reset(string $key): void
+            {
+            }
         };
     }
 
@@ -137,8 +147,14 @@ final class RateLimitAndAuthMutationTest extends TestCase
     {
         $called = false;
         $next = new class ($called) implements CrudHandlerInterface {
-            public function __construct(private bool &$c) {}
-            public function handle(CrudContext $ctx): CrudResult { $this->c = true; return new CrudResult(success: true); }
+            public function __construct(private bool &$c)
+            {
+            }
+            public function handle(CrudContext $ctx): CrudResult
+            {
+                $this->c = true;
+                return new CrudResult(success: true);
+            }
         };
 
         $limiter = $this->rateLimiter(true);

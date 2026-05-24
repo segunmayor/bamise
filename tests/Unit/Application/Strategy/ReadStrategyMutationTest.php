@@ -240,16 +240,34 @@ final class ReadStrategyMutationTest extends TestCase
         $this->resources->register('products', new FakeResourceDefinition());
 
         $repo = new class implements RepositoryInterface {
-            public function find(ResourceId $id): ?array { return null; }
-            public function insert(array $data): ResourceId { return new ResourceId(1); }
-            public function update(ResourceId $id, array $data): bool { return true; }
-            public function delete(ResourceId $id): bool { return true; }
+            public function find(ResourceId $id): ?array
+            {
+                return null;
+            }
+            public function insert(array $data): ResourceId
+            {
+                return new ResourceId(1);
+            }
+            public function update(ResourceId $id, array $data): bool
+            {
+                return true;
+            }
+            public function delete(ResourceId $id): bool
+            {
+                return true;
+            }
             public function findAll(array $criteria = [], int $limit = 100, int $offset = 0): array
             {
                 return [['id' => 1, 'name' => 'Solo']];
             }
-            public function updateBulk(array $criteria, array $data): int { return 0; }
-            public function deleteBulk(array $criteria): int { return 0; }
+            public function updateBulk(array $criteria, array $data): int
+            {
+                return 0;
+            }
+            public function deleteBulk(array $criteria): int
+            {
+                return 0;
+            }
         };
 
         $this->repos->register('products', $repo);
@@ -299,18 +317,38 @@ final class ReadStrategyMutationTest extends TestCase
 
         $capturedId = null;
         $repo = new class ($capturedId) implements RepositoryInterface {
-            public function __construct(private ?int &$captured) {}
+            public function __construct(private ?int &$captured)
+            {
+            }
             public function find(ResourceId $id): ?array
             {
                 $this->captured = (int) $id->value;
                 return ['product_id' => $id->value, 'name' => 'Found'];
             }
-            public function insert(array $data): ResourceId { return new ResourceId(1); }
-            public function update(ResourceId $id, array $data): bool { return true; }
-            public function delete(ResourceId $id): bool { return true; }
-            public function findAll(array $criteria = [], int $limit = 100, int $offset = 0): array { return []; }
-            public function updateBulk(array $criteria, array $data): int { return 0; }
-            public function deleteBulk(array $criteria): int { return 0; }
+            public function insert(array $data): ResourceId
+            {
+                return new ResourceId(1);
+            }
+            public function update(ResourceId $id, array $data): bool
+            {
+                return true;
+            }
+            public function delete(ResourceId $id): bool
+            {
+                return true;
+            }
+            public function findAll(array $criteria = [], int $limit = 100, int $offset = 0): array
+            {
+                return [];
+            }
+            public function updateBulk(array $criteria, array $data): int
+            {
+                return 0;
+            }
+            public function deleteBulk(array $criteria): int
+            {
+                return 0;
+            }
         };
         $this->repos->register('products', $repo);
 
@@ -332,18 +370,38 @@ final class ReadStrategyMutationTest extends TestCase
 
         $capturedCriteria = null;
         $repo = new class ($capturedCriteria) implements RepositoryInterface {
-            public function __construct(private ?array &$captured) {}
-            public function find(ResourceId $id): ?array { return null; }
-            public function insert(array $data): ResourceId { return new ResourceId(1); }
-            public function update(ResourceId $id, array $data): bool { return true; }
-            public function delete(ResourceId $id): bool { return true; }
+            public function __construct(private ?array &$captured)
+            {
+            }
+            public function find(ResourceId $id): ?array
+            {
+                return null;
+            }
+            public function insert(array $data): ResourceId
+            {
+                return new ResourceId(1);
+            }
+            public function update(ResourceId $id, array $data): bool
+            {
+                return true;
+            }
+            public function delete(ResourceId $id): bool
+            {
+                return true;
+            }
             public function findAll(array $criteria = [], int $limit = 100, int $offset = 0): array
             {
                 $this->captured = $criteria;
                 return [];
             }
-            public function updateBulk(array $criteria, array $data): int { return 0; }
-            public function deleteBulk(array $criteria): int { return 0; }
+            public function updateBulk(array $criteria, array $data): int
+            {
+                return 0;
+            }
+            public function deleteBulk(array $criteria): int
+            {
+                return 0;
+            }
         };
         $this->repos->register('products', $repo);
 
@@ -365,18 +423,38 @@ final class ReadStrategyMutationTest extends TestCase
 
         $capturedCriteria = null;
         $repo = new class ($capturedCriteria) implements RepositoryInterface {
-            public function __construct(private ?array &$captured) {}
-            public function find(ResourceId $id): ?array { return null; }
-            public function insert(array $data): ResourceId { return new ResourceId(1); }
-            public function update(ResourceId $id, array $data): bool { return true; }
-            public function delete(ResourceId $id): bool { return true; }
+            public function __construct(private ?array &$captured)
+            {
+            }
+            public function find(ResourceId $id): ?array
+            {
+                return null;
+            }
+            public function insert(array $data): ResourceId
+            {
+                return new ResourceId(1);
+            }
+            public function update(ResourceId $id, array $data): bool
+            {
+                return true;
+            }
+            public function delete(ResourceId $id): bool
+            {
+                return true;
+            }
             public function findAll(array $criteria = [], int $limit = 100, int $offset = 0): array
             {
                 $this->captured = $criteria;
                 return [];
             }
-            public function updateBulk(array $criteria, array $data): int { return 0; }
-            public function deleteBulk(array $criteria): int { return 0; }
+            public function updateBulk(array $criteria, array $data): int
+            {
+                return 0;
+            }
+            public function deleteBulk(array $criteria): int
+            {
+                return 0;
+            }
         };
         $this->repos->register('products', $repo);
 
@@ -394,52 +472,115 @@ final class ReadStrategyMutationTest extends TestCase
     private function createConfiguredRepo(callable $findFn): RepositoryInterface
     {
         return new class ($findFn) implements RepositoryInterface {
-            public function __construct(private readonly \Closure $fn) {}
-            public function find(ResourceId $id): ?array { return ($this->fn)($id); }
-            public function insert(array $data): ResourceId { return new ResourceId(1); }
-            public function update(ResourceId $id, array $data): bool { return true; }
-            public function delete(ResourceId $id): bool { return true; }
-            public function findAll(array $criteria = [], int $limit = 100, int $offset = 0): array { return []; }
-            public function updateBulk(array $criteria, array $data): int { return 0; }
-            public function deleteBulk(array $criteria): int { return 0; }
+            public function __construct(private readonly \Closure $fn)
+            {
+            }
+            public function find(ResourceId $id): ?array
+            {
+                return ($this->fn)($id);
+            }
+            public function insert(array $data): ResourceId
+            {
+                return new ResourceId(1);
+            }
+            public function update(ResourceId $id, array $data): bool
+            {
+                return true;
+            }
+            public function delete(ResourceId $id): bool
+            {
+                return true;
+            }
+            public function findAll(array $criteria = [], int $limit = 100, int $offset = 0): array
+            {
+                return [];
+            }
+            public function updateBulk(array $criteria, array $data): int
+            {
+                return 0;
+            }
+            public function deleteBulk(array $criteria): int
+            {
+                return 0;
+            }
         };
     }
 
     private function createCapturingRepo(?int &$capturedLimit): RepositoryInterface
     {
         return new class ($capturedLimit) implements RepositoryInterface {
-            public function __construct(private ?int &$captured) {}
-            public function find(ResourceId $id): ?array { return null; }
-            public function insert(array $data): ResourceId { return new ResourceId(1); }
-            public function update(ResourceId $id, array $data): bool { return true; }
-            public function delete(ResourceId $id): bool { return true; }
+            public function __construct(private ?int &$captured)
+            {
+            }
+            public function find(ResourceId $id): ?array
+            {
+                return null;
+            }
+            public function insert(array $data): ResourceId
+            {
+                return new ResourceId(1);
+            }
+            public function update(ResourceId $id, array $data): bool
+            {
+                return true;
+            }
+            public function delete(ResourceId $id): bool
+            {
+                return true;
+            }
             public function findAll(array $criteria = [], int $limit = 100, int $offset = 0): array
             {
                 $this->captured = $limit;
 
                 return [];
             }
-            public function updateBulk(array $criteria, array $data): int { return 0; }
-            public function deleteBulk(array $criteria): int { return 0; }
+            public function updateBulk(array $criteria, array $data): int
+            {
+                return 0;
+            }
+            public function deleteBulk(array $criteria): int
+            {
+                return 0;
+            }
         };
     }
 
     private function createCapturingRepoOffset(?int &$capturedOffset): RepositoryInterface
     {
         return new class ($capturedOffset) implements RepositoryInterface {
-            public function __construct(private ?int &$captured) {}
-            public function find(ResourceId $id): ?array { return null; }
-            public function insert(array $data): ResourceId { return new ResourceId(1); }
-            public function update(ResourceId $id, array $data): bool { return true; }
-            public function delete(ResourceId $id): bool { return true; }
+            public function __construct(private ?int &$captured)
+            {
+            }
+            public function find(ResourceId $id): ?array
+            {
+                return null;
+            }
+            public function insert(array $data): ResourceId
+            {
+                return new ResourceId(1);
+            }
+            public function update(ResourceId $id, array $data): bool
+            {
+                return true;
+            }
+            public function delete(ResourceId $id): bool
+            {
+                return true;
+            }
             public function findAll(array $criteria = [], int $limit = 100, int $offset = 0): array
             {
                 $this->captured = $offset;
 
                 return [];
             }
-            public function updateBulk(array $criteria, array $data): int { return 0; }
-            public function deleteBulk(array $criteria): int { return 0; }
+            public function updateBulk(array $criteria, array $data): int
+            {
+                return 0;
+            }
+            public function deleteBulk(array $criteria): int
+            {
+                return 0;
+            }
         };
     }
 }

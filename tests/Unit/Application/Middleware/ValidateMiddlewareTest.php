@@ -26,7 +26,9 @@ final class ValidateMiddlewareTest extends TestCase
     {
         $reached = false;
         $next = new class ($reached) implements CrudHandlerInterface {
-            public function __construct(private bool &$reached) {}
+            public function __construct(private bool &$reached)
+            {
+            }
             public function handle(CrudContext $context): CrudResult
             {
                 $this->reached = true;
@@ -46,7 +48,10 @@ final class ValidateMiddlewareTest extends TestCase
         $this->middleware(valid: false)->process(
             $this->context(['name' => '']),
             new class implements CrudHandlerInterface {
-                public function handle(CrudContext $context): CrudResult { return new CrudResult(success: true); }
+                public function handle(CrudContext $context): CrudResult
+                {
+                    return new CrudResult(success: true);
+                }
             },
         );
     }
@@ -66,7 +71,9 @@ final class ValidateMiddlewareTest extends TestCase
 
         $capturedContext = null;
         $next = new class ($capturedContext) implements CrudHandlerInterface {
-            public function __construct(private mixed &$capturedContext) {}
+            public function __construct(private mixed &$capturedContext)
+            {
+            }
             public function handle(CrudContext $context): CrudResult
             {
                 $this->capturedContext = $context;

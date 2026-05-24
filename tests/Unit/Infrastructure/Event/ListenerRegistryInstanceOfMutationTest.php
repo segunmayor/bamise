@@ -28,7 +28,10 @@ final class ListenerRegistryInstanceOfMutationTest extends TestCase
 
         // Dispatch a non-DomainEventInterface event that implements Countable
         $event = new class implements \Countable {
-            public function count(): int { return 0; }
+            public function count(): int
+            {
+                return 0;
+            }
         };
 
         // With InstanceOf_ mutation (if true): resolveEventTypes includes all interfaces
@@ -46,10 +49,14 @@ final class ListenerRegistryInstanceOfMutationTest extends TestCase
 
         // Create a DomainEventInterface event that also implements another interface
         $event = new class implements DomainEventInterface, \Countable {
-            public function count(): int { return 0; }
+            public function count(): int
+            {
+                return 0;
+            }
         };
 
-        $registry->add(\Countable::class, function () {});
+        $registry->add(\Countable::class, function () {
+        });
 
         $listeners = $registry->forEvent($event);
 

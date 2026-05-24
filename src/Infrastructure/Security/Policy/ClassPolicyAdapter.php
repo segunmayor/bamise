@@ -20,7 +20,7 @@ final class ClassPolicyAdapter implements PolicyPortInterface
         array $policyClasses,
         private readonly ?object $target = null,
     ) {
-        $this->policyClasses = array_values($policyClasses);
+        $this->policyClasses = $policyClasses;
     }
 
     #[\Override]

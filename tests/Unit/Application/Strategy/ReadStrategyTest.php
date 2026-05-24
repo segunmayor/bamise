@@ -25,13 +25,38 @@ final class ReadStrategyTest extends TestCase
             {
             }
 
-            public function find(ResourceId $id): ?array { unset($id); return $this->row; }
-            public function insert(array $data): ResourceId { unset($data); return new ResourceId(1); }
-            public function update(ResourceId $id, array $data): bool { unset($id, $data); return true; }
-            public function delete(ResourceId $id): bool { unset($id); return true; }
-            public function findAll(array $criteria = [], int $limit = 100, int $offset = 0): array { return []; }
-            public function updateBulk(array $criteria, array $data): int { return 0; }
-            public function deleteBulk(array $criteria): int { return 0; }
+            public function find(ResourceId $id): ?array
+            {
+                unset($id);
+                return $this->row;
+            }
+            public function insert(array $data): ResourceId
+            {
+                unset($data);
+                return new ResourceId(1);
+            }
+            public function update(ResourceId $id, array $data): bool
+            {
+                unset($id, $data);
+                return true;
+            }
+            public function delete(ResourceId $id): bool
+            {
+                unset($id);
+                return true;
+            }
+            public function findAll(array $criteria = [], int $limit = 100, int $offset = 0): array
+            {
+                return [];
+            }
+            public function updateBulk(array $criteria, array $data): int
+            {
+                return 0;
+            }
+            public function deleteBulk(array $criteria): int
+            {
+                return 0;
+            }
         };
 
         $result = $this->makeStrategy($repo)->execute($this->context(['id' => 3]));
@@ -43,13 +68,38 @@ final class ReadStrategyTest extends TestCase
     public function test_returns_not_found_when_row_is_null(): void
     {
         $repo = new class implements RepositoryInterface {
-            public function find(ResourceId $id): ?array { unset($id); return null; }
-            public function insert(array $data): ResourceId { unset($data); return new ResourceId(1); }
-            public function update(ResourceId $id, array $data): bool { unset($id, $data); return true; }
-            public function delete(ResourceId $id): bool { unset($id); return true; }
-            public function findAll(array $criteria = [], int $limit = 100, int $offset = 0): array { return []; }
-            public function updateBulk(array $criteria, array $data): int { return 0; }
-            public function deleteBulk(array $criteria): int { return 0; }
+            public function find(ResourceId $id): ?array
+            {
+                unset($id);
+                return null;
+            }
+            public function insert(array $data): ResourceId
+            {
+                unset($data);
+                return new ResourceId(1);
+            }
+            public function update(ResourceId $id, array $data): bool
+            {
+                unset($id, $data);
+                return true;
+            }
+            public function delete(ResourceId $id): bool
+            {
+                unset($id);
+                return true;
+            }
+            public function findAll(array $criteria = [], int $limit = 100, int $offset = 0): array
+            {
+                return [];
+            }
+            public function updateBulk(array $criteria, array $data): int
+            {
+                return 0;
+            }
+            public function deleteBulk(array $criteria): int
+            {
+                return 0;
+            }
         };
 
         $result = $this->makeStrategy($repo)->execute($this->context(['id' => 99]));
@@ -61,13 +111,38 @@ final class ReadStrategyTest extends TestCase
     public function test_returns_empty_collection_when_no_id_provided(): void
     {
         $repo = new class implements RepositoryInterface {
-            public function find(ResourceId $id): ?array { unset($id); return ['id' => 1]; }
-            public function insert(array $data): ResourceId { unset($data); return new ResourceId(1); }
-            public function update(ResourceId $id, array $data): bool { unset($id, $data); return true; }
-            public function delete(ResourceId $id): bool { unset($id); return true; }
-            public function findAll(array $criteria = [], int $limit = 100, int $offset = 0): array { return []; }
-            public function updateBulk(array $criteria, array $data): int { return 0; }
-            public function deleteBulk(array $criteria): int { return 0; }
+            public function find(ResourceId $id): ?array
+            {
+                unset($id);
+                return ['id' => 1];
+            }
+            public function insert(array $data): ResourceId
+            {
+                unset($data);
+                return new ResourceId(1);
+            }
+            public function update(ResourceId $id, array $data): bool
+            {
+                unset($id, $data);
+                return true;
+            }
+            public function delete(ResourceId $id): bool
+            {
+                unset($id);
+                return true;
+            }
+            public function findAll(array $criteria = [], int $limit = 100, int $offset = 0): array
+            {
+                return [];
+            }
+            public function updateBulk(array $criteria, array $data): int
+            {
+                return 0;
+            }
+            public function deleteBulk(array $criteria): int
+            {
+                return 0;
+            }
         };
 
         $result = $this->makeStrategy($repo)->execute($this->context([]));
@@ -85,13 +160,38 @@ final class ReadStrategyTest extends TestCase
             {
             }
 
-            public function find(ResourceId $id): ?array { unset($id); return null; }
-            public function insert(array $data): ResourceId { unset($data); return new ResourceId(1); }
-            public function update(ResourceId $id, array $data): bool { unset($id, $data); return true; }
-            public function delete(ResourceId $id): bool { unset($id); return true; }
-            public function findAll(array $criteria = [], int $limit = 100, int $offset = 0): array { return $this->rows; }
-            public function updateBulk(array $criteria, array $data): int { return 0; }
-            public function deleteBulk(array $criteria): int { return 0; }
+            public function find(ResourceId $id): ?array
+            {
+                unset($id);
+                return null;
+            }
+            public function insert(array $data): ResourceId
+            {
+                unset($data);
+                return new ResourceId(1);
+            }
+            public function update(ResourceId $id, array $data): bool
+            {
+                unset($id, $data);
+                return true;
+            }
+            public function delete(ResourceId $id): bool
+            {
+                unset($id);
+                return true;
+            }
+            public function findAll(array $criteria = [], int $limit = 100, int $offset = 0): array
+            {
+                return $this->rows;
+            }
+            public function updateBulk(array $criteria, array $data): int
+            {
+                return 0;
+            }
+            public function deleteBulk(array $criteria): int
+            {
+                return 0;
+            }
         };
 
         $result = $this->makeStrategy($repo)->execute($this->context([]));
@@ -109,10 +209,26 @@ final class ReadStrategyTest extends TestCase
             {
             }
 
-            public function find(ResourceId $id): ?array { unset($id); return null; }
-            public function insert(array $data): ResourceId { unset($data); return new ResourceId(1); }
-            public function update(ResourceId $id, array $data): bool { unset($id, $data); return true; }
-            public function delete(ResourceId $id): bool { unset($id); return true; }
+            public function find(ResourceId $id): ?array
+            {
+                unset($id);
+                return null;
+            }
+            public function insert(array $data): ResourceId
+            {
+                unset($data);
+                return new ResourceId(1);
+            }
+            public function update(ResourceId $id, array $data): bool
+            {
+                unset($id, $data);
+                return true;
+            }
+            public function delete(ResourceId $id): bool
+            {
+                unset($id);
+                return true;
+            }
             public function findAll(array $criteria = [], int $limit = 100, int $offset = 0): array
             {
                 $this->captured = $criteria;
@@ -120,8 +236,14 @@ final class ReadStrategyTest extends TestCase
                 return [];
             }
 
-            public function updateBulk(array $criteria, array $data): int { return 0; }
-            public function deleteBulk(array $criteria): int { return 0; }
+            public function updateBulk(array $criteria, array $data): int
+            {
+                return 0;
+            }
+            public function deleteBulk(array $criteria): int
+            {
+                return 0;
+            }
         };
 
         $this->makeStrategy($repo)->execute($this->context(['status' => 'active']));
@@ -144,12 +266,33 @@ final class ReadStrategyTest extends TestCase
                 return ['uuid' => 'abc'];
             }
 
-            public function insert(array $data): ResourceId { unset($data); return new ResourceId(1); }
-            public function update(ResourceId $id, array $data): bool { unset($id, $data); return true; }
-            public function delete(ResourceId $id): bool { unset($id); return true; }
-            public function findAll(array $criteria = [], int $limit = 100, int $offset = 0): array { return []; }
-            public function updateBulk(array $criteria, array $data): int { return 0; }
-            public function deleteBulk(array $criteria): int { return 0; }
+            public function insert(array $data): ResourceId
+            {
+                unset($data);
+                return new ResourceId(1);
+            }
+            public function update(ResourceId $id, array $data): bool
+            {
+                unset($id, $data);
+                return true;
+            }
+            public function delete(ResourceId $id): bool
+            {
+                unset($id);
+                return true;
+            }
+            public function findAll(array $criteria = [], int $limit = 100, int $offset = 0): array
+            {
+                return [];
+            }
+            public function updateBulk(array $criteria, array $data): int
+            {
+                return 0;
+            }
+            public function deleteBulk(array $criteria): int
+            {
+                return 0;
+            }
         };
 
         $def = new FakeResourceDefinition(primaryKey: 'uuid');

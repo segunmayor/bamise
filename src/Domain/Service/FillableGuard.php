@@ -25,6 +25,7 @@ final class FillableGuard
                 continue;
             }
 
+            /** @psalm-suppress RedundantCondition $key checked against $guarded above; $fillable is a separate set */
             if ($fillable !== [] && ! in_array($key, $fillable, true)) {
                 throw new MassAssignmentException(
                     sprintf('Mass assignment not allowed for field "%s".', $key),

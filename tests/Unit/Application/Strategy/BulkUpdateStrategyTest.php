@@ -34,11 +34,30 @@ final class BulkUpdateStrategyTest extends TestCase
             {
             }
 
-            public function find(ResourceId $id): ?array { unset($id); return null; }
-            public function insert(array $data): ResourceId { unset($data); return new ResourceId(1); }
-            public function update(ResourceId $id, array $data): bool { unset($id, $data); return true; }
-            public function delete(ResourceId $id): bool { unset($id); return true; }
-            public function findAll(array $criteria = [], int $limit = 100, int $offset = 0): array { return []; }
+            public function find(ResourceId $id): ?array
+            {
+                unset($id);
+                return null;
+            }
+            public function insert(array $data): ResourceId
+            {
+                unset($data);
+                return new ResourceId(1);
+            }
+            public function update(ResourceId $id, array $data): bool
+            {
+                unset($id, $data);
+                return true;
+            }
+            public function delete(ResourceId $id): bool
+            {
+                unset($id);
+                return true;
+            }
+            public function findAll(array $criteria = [], int $limit = 100, int $offset = 0): array
+            {
+                return [];
+            }
             public function updateBulk(array $criteria, array $data): int
             {
                 $this->captured = $criteria;
@@ -46,7 +65,10 @@ final class BulkUpdateStrategyTest extends TestCase
                 return 0;
             }
 
-            public function deleteBulk(array $criteria): int { return 0; }
+            public function deleteBulk(array $criteria): int
+            {
+                return 0;
+            }
         };
 
         $strategy = new BulkUpdateStrategy(
@@ -67,11 +89,30 @@ final class BulkUpdateStrategyTest extends TestCase
             {
             }
 
-            public function find(ResourceId $id): ?array { unset($id); return null; }
-            public function insert(array $data): ResourceId { unset($data); return new ResourceId(1); }
-            public function update(ResourceId $id, array $data): bool { unset($id, $data); return true; }
-            public function delete(ResourceId $id): bool { unset($id); return true; }
-            public function findAll(array $criteria = [], int $limit = 100, int $offset = 0): array { return []; }
+            public function find(ResourceId $id): ?array
+            {
+                unset($id);
+                return null;
+            }
+            public function insert(array $data): ResourceId
+            {
+                unset($data);
+                return new ResourceId(1);
+            }
+            public function update(ResourceId $id, array $data): bool
+            {
+                unset($id, $data);
+                return true;
+            }
+            public function delete(ResourceId $id): bool
+            {
+                unset($id);
+                return true;
+            }
+            public function findAll(array $criteria = [], int $limit = 100, int $offset = 0): array
+            {
+                return [];
+            }
             public function updateBulk(array $criteria, array $data): int
             {
                 $this->captured = $data;
@@ -79,7 +120,10 @@ final class BulkUpdateStrategyTest extends TestCase
                 return 0;
             }
 
-            public function deleteBulk(array $criteria): int { return 0; }
+            public function deleteBulk(array $criteria): int
+            {
+                return 0;
+            }
         };
 
         $strategy = new BulkUpdateStrategy(
@@ -115,13 +159,39 @@ final class BulkUpdateStrategyTest extends TestCase
             {
             }
 
-            public function find(ResourceId $id): ?array { unset($id); return null; }
-            public function insert(array $data): ResourceId { unset($data); return new ResourceId(1); }
-            public function update(ResourceId $id, array $data): bool { unset($id, $data); return true; }
-            public function delete(ResourceId $id): bool { unset($id); return true; }
-            public function findAll(array $criteria = [], int $limit = 100, int $offset = 0): array { return []; }
-            public function updateBulk(array $criteria, array $data): int { unset($criteria, $data); return $this->affected; }
-            public function deleteBulk(array $criteria): int { return 0; }
+            public function find(ResourceId $id): ?array
+            {
+                unset($id);
+                return null;
+            }
+            public function insert(array $data): ResourceId
+            {
+                unset($data);
+                return new ResourceId(1);
+            }
+            public function update(ResourceId $id, array $data): bool
+            {
+                unset($id, $data);
+                return true;
+            }
+            public function delete(ResourceId $id): bool
+            {
+                unset($id);
+                return true;
+            }
+            public function findAll(array $criteria = [], int $limit = 100, int $offset = 0): array
+            {
+                return [];
+            }
+            public function updateBulk(array $criteria, array $data): int
+            {
+                unset($criteria, $data);
+                return $this->affected;
+            }
+            public function deleteBulk(array $criteria): int
+            {
+                return 0;
+            }
         };
 
         return new BulkUpdateStrategy(

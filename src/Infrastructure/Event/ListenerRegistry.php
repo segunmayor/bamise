@@ -49,7 +49,8 @@ final class ListenerRegistry
         $types = [get_class($event)];
 
         if ($event instanceof DomainEventInterface) {
-            foreach (class_implements($event) ?: [] as $interface) {
+            $interfaces = class_implements($event);
+            foreach ($interfaces !== false ? $interfaces : [] as $interface) {
                 $types[] = $interface;
             }
         }

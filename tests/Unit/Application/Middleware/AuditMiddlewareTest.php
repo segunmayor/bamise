@@ -97,7 +97,9 @@ final class AuditMiddlewareTest extends TestCase
     private function handler(bool $success, array $data = []): CrudHandlerInterface
     {
         return new class ($success, $data) implements CrudHandlerInterface {
-            public function __construct(private bool $success, private array $data) {}
+            public function __construct(private bool $success, private array $data)
+            {
+            }
             public function handle(CrudContext $context): CrudResult
             {
                 return new CrudResult(success: $this->success, data: $this->data);

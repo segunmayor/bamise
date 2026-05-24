@@ -71,7 +71,8 @@ final class EventPayloadEncoderTest extends TestCase
 
     public function test_encode_throws_for_domain_event_without_crud_context(): void
     {
-        $event = new class implements DomainEventInterface {};
+        $event = new class implements DomainEventInterface {
+        };
 
         $this->expectException(InvalidArgumentException::class);
 
@@ -81,7 +82,9 @@ final class EventPayloadEncoderTest extends TestCase
     public function test_encode_throws_for_domain_event_with_non_context_property(): void
     {
         $event = new class (context: 'not-a-context') implements DomainEventInterface {
-            public function __construct(public readonly string $context) {}
+            public function __construct(public readonly string $context)
+            {
+            }
         };
 
         $this->expectException(InvalidArgumentException::class);
@@ -100,7 +103,9 @@ final class EventPayloadEncoderTest extends TestCase
         );
 
         $event = new class ($ctx) implements DomainEventInterface {
-            public function __construct(public readonly CrudContext $context) {}
+            public function __construct(public readonly CrudContext $context)
+            {
+            }
         };
 
         $encoded = $this->encoder->encode($event);

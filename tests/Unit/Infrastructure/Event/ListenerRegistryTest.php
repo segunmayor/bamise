@@ -25,7 +25,8 @@ final class ListenerRegistryTest extends TestCase
     public function test_returns_listener_for_exact_event_class(): void
     {
         $registry = new ListenerRegistry();
-        $listener = static function (object $e): void {};
+        $listener = static function (object $e): void {
+        };
         $registry->add(BeforeCreate::class, $listener);
 
         $result = $registry->forEvent($this->makeBeforeCreate());
@@ -38,9 +39,15 @@ final class ListenerRegistryTest extends TestCase
     {
         $order = [];
         $registry = new ListenerRegistry();
-        $registry->add(BeforeCreate::class, static function () use (&$order): void { $order[] = 'low'; }, 0);
-        $registry->add(BeforeCreate::class, static function () use (&$order): void { $order[] = 'high'; }, 100);
-        $registry->add(BeforeCreate::class, static function () use (&$order): void { $order[] = 'mid'; }, 50);
+        $registry->add(BeforeCreate::class, static function () use (&$order): void {
+            $order[] = 'low';
+        }, 0);
+        $registry->add(BeforeCreate::class, static function () use (&$order): void {
+            $order[] = 'high';
+        }, 100);
+        $registry->add(BeforeCreate::class, static function () use (&$order): void {
+            $order[] = 'mid';
+        }, 50);
 
         $result = $registry->forEvent($this->makeBeforeCreate());
 
@@ -70,8 +77,12 @@ final class ListenerRegistryTest extends TestCase
     {
         $order = [];
         $registry = new ListenerRegistry();
-        $registry->add(BeforeCreate::class, static function () use (&$order): void { $order[] = 'concrete'; }, 10);
-        $registry->add(DomainEventInterface::class, static function () use (&$order): void { $order[] = 'interface'; }, 20);
+        $registry->add(BeforeCreate::class, static function () use (&$order): void {
+            $order[] = 'concrete';
+        }, 10);
+        $registry->add(DomainEventInterface::class, static function () use (&$order): void {
+            $order[] = 'interface';
+        }, 20);
 
         $result = $registry->forEvent($this->makeBeforeCreate());
 
@@ -85,7 +96,8 @@ final class ListenerRegistryTest extends TestCase
     public function test_does_not_expand_interfaces_for_non_domain_events(): void
     {
         $registry = new ListenerRegistry();
-        $registry->add(DomainEventInterface::class, static function (): void {});
+        $registry->add(DomainEventInterface::class, static function (): void {
+        });
 
         $result = $registry->forEvent(new \stdClass());
 
@@ -95,9 +107,11 @@ final class ListenerRegistryTest extends TestCase
     public function test_event_class_with_no_registered_listeners_returns_empty_array(): void
     {
         $registry = new ListenerRegistry();
-        $registry->add(BeforeCreate::class, static function (): void {});
+        $registry->add(BeforeCreate::class, static function (): void {
+        });
 
-        $unrelatedEvent = new class implements DomainEventInterface {};
+        $unrelatedEvent = new class implements DomainEventInterface {
+        };
 
         self::assertSame([], $registry->forEvent($unrelatedEvent));
     }
@@ -105,7 +119,8 @@ final class ListenerRegistryTest extends TestCase
     public function test_preserves_async_flag_on_prioritized_listener(): void
     {
         $registry = new ListenerRegistry();
-        $registry->add(BeforeCreate::class, static function (): void {}, 0, async: true);
+        $registry->add(BeforeCreate::class, static function (): void {
+        }, 0, async: true);
 
         $result = $registry->forEvent($this->makeBeforeCreate());
 
@@ -115,7 +130,8 @@ final class ListenerRegistryTest extends TestCase
     public function test_preserves_sync_flag_by_default(): void
     {
         $registry = new ListenerRegistry();
-        $registry->add(BeforeCreate::class, static function (): void {});
+        $registry->add(BeforeCreate::class, static function (): void {
+        });
 
         $result = $registry->forEvent($this->makeBeforeCreate());
 
@@ -125,9 +141,12 @@ final class ListenerRegistryTest extends TestCase
     public function test_multiple_adds_accumulate_independently(): void
     {
         $registry = new ListenerRegistry();
-        $registry->add(BeforeCreate::class, static function (): void {}, 5);
-        $registry->add(BeforeCreate::class, static function (): void {}, 5);
-        $registry->add(BeforeCreate::class, static function (): void {}, 5);
+        $registry->add(BeforeCreate::class, static function (): void {
+        }, 5);
+        $registry->add(BeforeCreate::class, static function (): void {
+        }, 5);
+        $registry->add(BeforeCreate::class, static function (): void {
+        }, 5);
 
         self::assertCount(3, $registry->forEvent($this->makeBeforeCreate()));
     }

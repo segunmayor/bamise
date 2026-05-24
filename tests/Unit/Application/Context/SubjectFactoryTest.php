@@ -46,9 +46,18 @@ final class SubjectFactoryTest extends TestCase
     public function test_maps_generic_object_with_id_method(): void
     {
         $external = new class {
-            public function id(): int { return 7; }
-            public function roles(): array { return ['viewer']; }
-            public function permissions(): array { return ['read']; }
+            public function id(): int
+            {
+                return 7;
+            }
+            public function roles(): array
+            {
+                return ['viewer'];
+            }
+            public function permissions(): array
+            {
+                return ['read'];
+            }
         };
 
         $subject = $this->factory->fromAuthSubject($external);
@@ -61,7 +70,10 @@ final class SubjectFactoryTest extends TestCase
     public function test_maps_generic_object_without_roles_or_permissions(): void
     {
         $external = new class {
-            public function id(): string { return 'user-abc'; }
+            public function id(): string
+            {
+                return 'user-abc';
+            }
         };
 
         $subject = $this->factory->fromAuthSubject($external);
@@ -82,7 +94,10 @@ final class SubjectFactoryTest extends TestCase
     public function test_throws_when_id_method_returns_invalid_type(): void
     {
         $external = new class {
-            public function id(): array { return []; }
+            public function id(): array
+            {
+                return [];
+            }
         };
 
         $this->expectException(InvalidArgumentException::class);

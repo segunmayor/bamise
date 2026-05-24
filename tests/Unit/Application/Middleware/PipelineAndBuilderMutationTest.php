@@ -36,14 +36,19 @@ final class PipelineAndBuilderMutationTest extends TestCase
     private function terminal(): CrudHandlerInterface
     {
         return new class implements CrudHandlerInterface {
-            public function handle(CrudContext $c): CrudResult { return new CrudResult(success: true); }
+            public function handle(CrudContext $c): CrudResult
+            {
+                return new CrudResult(success: true);
+            }
         };
     }
 
     private function tracker(array &$order, string $label): MiddlewareInterface
     {
         return new class ($order, $label) implements MiddlewareInterface {
-            public function __construct(private array &$o, private string $l) {}
+            public function __construct(private array &$o, private string $l)
+            {
+            }
 
             public function process(CrudContext $c, CrudHandlerInterface $next): CrudResult
             {
@@ -151,7 +156,7 @@ final class PipelineAndBuilderMutationTest extends TestCase
     {
         // add($mwDefault) → priority 0; add($mwNeg, -1) → explicit -1.
         // Original: mwNeg(-1) runs first. ✓
-        // Mutant(-1): default(-1) = explicit(-1). Stable: mwDefault inserted first → both -1. Sort stable keeps mwDefault first. Execute: mwDefault first. Test fails. ✓
+        // Mutant(-1): default(-1) = explicit(-1). Stable sort keeps mwDefault first → test fails. ✓
         $order = [];
         $mwDefault = $this->tracker($order, 'default_priority');
         $mwNeg = $this->tracker($order, 'explicit_negative_1');

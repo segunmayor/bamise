@@ -43,11 +43,13 @@ final class AuthorizeMiddleware implements MiddlewareInterface
             );
         }
 
-        if (! $this->policyEvaluator->evaluate(
-            $subject,
-            $context->operation->value,
-            $context->resourceName,
-        )) {
+        if (
+            ! $this->policyEvaluator->evaluate(
+                $subject,
+                $context->operation->value,
+                $context->resourceName,
+            )
+        ) {
             throw new AuthorizationException(
                 sprintf('Policy denied for resource "%s".', $context->resourceName),
             );

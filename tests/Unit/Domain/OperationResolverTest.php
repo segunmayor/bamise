@@ -90,8 +90,8 @@ final class OperationResolverTest extends TestCase
         yield 'GET maps to read'    => ['GET',    OperationType::Read];
         yield 'POST maps to create' => ['POST',   OperationType::Create];
         yield 'PUT maps to update'  => ['PUT',    OperationType::Update];
-        yield 'PATCH maps to update'=> ['PATCH',  OperationType::Update];
-        yield 'DELETE maps to delete'=> ['DELETE', OperationType::Delete];
+        yield 'PATCH maps to update' => ['PATCH',  OperationType::Update];
+        yield 'DELETE maps to delete' => ['DELETE', OperationType::Delete];
     }
 
     public function test_unmappable_method_without_default_throws(): void

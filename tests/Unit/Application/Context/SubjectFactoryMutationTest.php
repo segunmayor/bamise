@@ -30,9 +30,15 @@ final class SubjectFactoryMutationTest extends TestCase
     public function test_roles_from_array_returning_method_are_normalized(): void
     {
         $authSubject = new class {
-            public function id(): int { return 1; }
+            public function id(): int
+            {
+                return 1;
+            }
             /** @return list<string> */
-            public function roles(): array { return ['admin', 'editor']; }
+            public function roles(): array
+            {
+                return ['admin', 'editor'];
+            }
         };
 
         $subject = $this->factory->fromAuthSubject($authSubject);
@@ -44,9 +50,15 @@ final class SubjectFactoryMutationTest extends TestCase
     public function test_permissions_from_array_returning_method_are_normalized(): void
     {
         $authSubject = new class {
-            public function id(): int { return 2; }
+            public function id(): int
+            {
+                return 2;
+            }
             /** @return list<string> */
-            public function permissions(): array { return ['posts.read', 'posts.write']; }
+            public function permissions(): array
+            {
+                return ['posts.read', 'posts.write'];
+            }
         };
 
         $subject = $this->factory->fromAuthSubject($authSubject);
@@ -59,9 +71,15 @@ final class SubjectFactoryMutationTest extends TestCase
     {
         // CastArray mutation: removes (array) cast, which would fail if roles() returns a non-array
         $authSubject = new class {
-            public function id(): string { return 'user-1'; }
+            public function id(): string
+            {
+                return 'user-1';
+            }
             /** @return array<int, string> */
-            public function roles(): array { return [0 => 'admin']; }
+            public function roles(): array
+            {
+                return [0 => 'admin'];
+            }
         };
 
         $subject = $this->factory->fromAuthSubject($authSubject);
@@ -75,10 +93,16 @@ final class SubjectFactoryMutationTest extends TestCase
     {
         // UnwrapArrayMap mutation: removes strval cast
         $authSubject = new class {
-            public function id(): int { return 5; }
+            public function id(): int
+            {
+                return 5;
+            }
 
             /** @return array<int|string> */
-            public function roles(): array { return [1, 2, 'admin']; } // @phpstan-ignore-line
+            public function roles(): array
+            {
+                return [1, 2, 'admin'];
+            }
         };
 
         $subject = $this->factory->fromAuthSubject($authSubject);
@@ -91,10 +115,16 @@ final class SubjectFactoryMutationTest extends TestCase
     public function test_permissions_with_integer_values_cast_to_string(): void
     {
         $authSubject = new class {
-            public function id(): int { return 5; }
+            public function id(): int
+            {
+                return 5;
+            }
 
             /** @return array<int|string> */
-            public function permissions(): array { return [1, 'read']; } // @phpstan-ignore-line
+            public function permissions(): array
+            {
+                return [1, 'read'];
+            }
         };
 
         $subject = $this->factory->fromAuthSubject($authSubject);
@@ -107,10 +137,16 @@ final class SubjectFactoryMutationTest extends TestCase
     {
         // UnwrapArrayValues mutation: removes array_values, leaving non-sequential keys
         $authSubject = new class {
-            public function id(): int { return 5; }
+            public function id(): int
+            {
+                return 5;
+            }
 
             /** @return array<int, string> */
-            public function roles(): array { return [5 => 'admin', 10 => 'mod']; }
+            public function roles(): array
+            {
+                return [5 => 'admin', 10 => 'mod'];
+            }
         };
 
         $subject = $this->factory->fromAuthSubject($authSubject);
@@ -124,10 +160,16 @@ final class SubjectFactoryMutationTest extends TestCase
     public function test_permissions_array_is_reindexed(): void
     {
         $authSubject = new class {
-            public function id(): int { return 5; }
+            public function id(): int
+            {
+                return 5;
+            }
 
             /** @return array<int, string> */
-            public function permissions(): array { return [3 => 'read', 7 => 'write']; }
+            public function permissions(): array
+            {
+                return [3 => 'read', 7 => 'write'];
+            }
         };
 
         $subject = $this->factory->fromAuthSubject($authSubject);
@@ -166,7 +208,10 @@ final class SubjectFactoryMutationTest extends TestCase
     public function test_invalid_id_type_throws(): void
     {
         $authSubject = new class {
-            public function id(): array { return []; } // @phpstan-ignore-line
+            public function id(): array
+            {
+                return [];
+            }
         };
 
         $this->expectException(InvalidArgumentException::class);
@@ -186,7 +231,10 @@ final class SubjectFactoryMutationTest extends TestCase
     public function test_no_roles_method_defaults_to_empty_array(): void
     {
         $authSubject = new class {
-            public function id(): string { return 'x'; }
+            public function id(): string
+            {
+                return 'x';
+            }
         };
 
         $subject = $this->factory->fromAuthSubject($authSubject);
@@ -198,7 +246,10 @@ final class SubjectFactoryMutationTest extends TestCase
     public function test_no_permissions_method_defaults_to_empty_array(): void
     {
         $authSubject = new class {
-            public function id(): string { return 'x'; }
+            public function id(): string
+            {
+                return 'x';
+            }
         };
 
         $subject = $this->factory->fromAuthSubject($authSubject);

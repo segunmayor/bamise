@@ -21,12 +21,12 @@ final class SubscriberLoader
             if (is_string($config)) {
                 $method = $config;
                 $priority = 0;
-            } elseif (is_array($config) && isset($config[0])) {
-                $method = (string) $config[0];
-                $priority = (int) ($config[1] ?? 0);
+            } elseif (isset($config[0])) {
+                $method = $config[0];
+                $priority = $config[1] ?? 0;
             } else {
                 throw new InvalidArgumentException(
-                    sprintf('Invalid subscription config for event "%s".', (string) $eventClass),
+                    sprintf('Invalid subscription config for event "%s".', $eventClass),
                 );
             }
 
@@ -37,7 +37,7 @@ final class SubscriberLoader
             }
 
             $dispatcher->subscribe(
-                (string) $eventClass,
+                $eventClass,
                 $subscriber->{$method}(...),
                 $priority,
             );

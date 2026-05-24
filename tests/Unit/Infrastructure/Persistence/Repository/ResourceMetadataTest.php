@@ -32,16 +32,34 @@ final class ResourceMetadataTest extends TestCase
     public function test_from_with_empty_fillable(): void
     {
         $definition = new class implements \Bamise\Contract\Crud\ResourceDefinitionInterface {
-            public function table(): string { return 't'; }
-            public function primaryKey(): string { return 'pk'; }
+            public function table(): string
+            {
+                return 't';
+            }
+            public function primaryKey(): string
+            {
+                return 'pk';
+            }
             /** @return list<string> */
-            public function fillable(): array { return []; }
+            public function fillable(): array
+            {
+                return [];
+            }
             /** @return list<string> */
-            public function guarded(): array { return []; }
+            public function guarded(): array
+            {
+                return [];
+            }
             /** @return array<string, mixed> */
-            public function rules(\Bamise\Contract\Enum\OperationType $operation): array { return []; }
+            public function rules(\Bamise\Contract\Enum\OperationType $operation): array
+            {
+                return [];
+            }
             /** @return list<class-string> */
-            public function policyClasses(): array { return []; }
+            public function policyClasses(): array
+            {
+                return [];
+            }
         };
 
         $meta = ResourceMetadata::from($definition);

@@ -36,6 +36,7 @@
         "infection/infection": "^0.29",
         "phpstan/phpstan": "^2.0",
         "phpunit/phpunit": "^11",
+        "squizlabs/php_codesniffer": "^3.11",
         "vimeo/psalm": "^6.16"
     },
     "autoload": {
@@ -54,11 +55,16 @@
         "analyse": "phpstan analyse --memory-limit=512M",
         "cs-check": "php-cs-fixer check --ansi --diff",
         "cs-fix": "php-cs-fixer fix --ansi",
+        "phpcs": "phpcs --standard=phpcs.xml",
+        "phpcbf": "phpcbf --standard=phpcs.xml",
+        "psalm": "psalm --no-progress",
         "mutation": "infection --min-msi=70 --min-covered-msi=80 --threads=4",
         "ci": [
             "@test",
             "@analyse",
-            "@cs-check"
+            "@psalm",
+            "@cs-check",
+            "@phpcs"
         ]
     },
     "scripts-descriptions": {
@@ -67,6 +73,9 @@
         "analyse": "Run PHPStan static analysis",
         "cs-check": "Check code style (PHP CS Fixer, dry-run)",
         "cs-fix": "Auto-fix code style violations",
+        "phpcs": "Check PSR-12 compliance (PHP_CodeSniffer)",
+        "phpcbf": "Auto-fix PSR-12 violations (PHP_CodeSniffer)",
+        "psalm": "Run Psalm strict static analysis (level 1)",
         "mutation": "Run Infection mutation test suite",
         "ci": "Run test + analyse + cs-check (mirrors CI pipeline)"
     },

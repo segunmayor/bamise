@@ -50,13 +50,19 @@ final class FinalMutationKillsTest extends TestCase
             new PermissionEvaluator(),
             new PolicyEvaluator(
                 new class implements \Bamise\Contract\Security\PolicyPortInterface {
-                    public function allows(\Bamise\Contract\Enum\OperationType $op, ?object $sub, string $res): bool { return true; }
+                    public function allows(\Bamise\Contract\Enum\OperationType $op, ?object $sub, string $res): bool
+                    {
+                        return true;
+                    }
                 },
                 new \Bamise\Domain\Service\OperationTypeMapper(),
             ),
         );
         $terminal = new class implements \Bamise\Contract\CrudHandlerInterface {
-            public function handle(CrudContext $c): CrudResult { return new CrudResult(success: true); }
+            public function handle(CrudContext $c): CrudResult
+            {
+                return new CrudResult(success: true);
+            }
         };
 
         // context with no Subject (null subject)
@@ -79,19 +85,44 @@ final class FinalMutationKillsTest extends TestCase
 
         $capturedId = null;
         $repos->register('products', new class ($capturedId) implements RepositoryInterface {
-            public function __construct(private mixed &$id) {}
-            public function find(ResourceId $id): ?array { return null; }
-            public function insert(array $data): ResourceId { return new ResourceId(1); }
-            public function update(ResourceId $id, array $data): bool { $this->id = $id->value; return true; }
-            public function delete(ResourceId $id): bool { return true; }
-            public function findAll(array $criteria = [], int $limit = 100, int $offset = 0): array { return []; }
-            public function updateBulk(array $criteria, array $data): int { return 0; }
-            public function deleteBulk(array $criteria): int { return 0; }
+            public function __construct(private mixed &$id)
+            {
+            }
+            public function find(ResourceId $id): ?array
+            {
+                return null;
+            }
+            public function insert(array $data): ResourceId
+            {
+                return new ResourceId(1);
+            }
+            public function update(ResourceId $id, array $data): bool
+            {
+                $this->id = $id->value;
+                return true;
+            }
+            public function delete(ResourceId $id): bool
+            {
+                return true;
+            }
+            public function findAll(array $criteria = [], int $limit = 100, int $offset = 0): array
+            {
+                return [];
+            }
+            public function updateBulk(array $criteria, array $data): int
+            {
+                return 0;
+            }
+            public function deleteBulk(array $criteria): int
+            {
+                return 0;
+            }
         });
 
         $strategy = new UpdateStrategy($repos, $resources, new FillableGuard());
         $ctx = new CrudContext(
-            OperationType::Update, 'products',
+            OperationType::Update,
+            'products',
             ['product_id' => 5, 'id' => 99, 'name' => 'Widget'],
             null,
             new FakeCrudRequest(),
@@ -113,19 +144,44 @@ final class FinalMutationKillsTest extends TestCase
 
         $capturedId = null;
         $repos->register('products', new class ($capturedId) implements RepositoryInterface {
-            public function __construct(private mixed &$id) {}
-            public function find(ResourceId $id): ?array { return null; }
-            public function insert(array $data): ResourceId { return new ResourceId(1); }
-            public function update(ResourceId $id, array $data): bool { return true; }
-            public function delete(ResourceId $id): bool { $this->id = $id->value; return true; }
-            public function findAll(array $criteria = [], int $limit = 100, int $offset = 0): array { return []; }
-            public function updateBulk(array $criteria, array $data): int { return 0; }
-            public function deleteBulk(array $criteria): int { return 0; }
+            public function __construct(private mixed &$id)
+            {
+            }
+            public function find(ResourceId $id): ?array
+            {
+                return null;
+            }
+            public function insert(array $data): ResourceId
+            {
+                return new ResourceId(1);
+            }
+            public function update(ResourceId $id, array $data): bool
+            {
+                return true;
+            }
+            public function delete(ResourceId $id): bool
+            {
+                $this->id = $id->value;
+                return true;
+            }
+            public function findAll(array $criteria = [], int $limit = 100, int $offset = 0): array
+            {
+                return [];
+            }
+            public function updateBulk(array $criteria, array $data): int
+            {
+                return 0;
+            }
+            public function deleteBulk(array $criteria): int
+            {
+                return 0;
+            }
         });
 
         $strategy = new DeleteStrategy($repos, $resources);
         $ctx = new CrudContext(
-            OperationType::Delete, 'products',
+            OperationType::Delete,
+            'products',
             ['item_id' => 7, 'id' => 42],
             null,
             new FakeCrudRequest(),
@@ -161,16 +217,37 @@ final class FinalMutationKillsTest extends TestCase
 
         // Use a capturing logger
         $capturingLogger = new class ($logged) implements \Psr\Log\LoggerInterface {
-            public function __construct(private mixed &$captured) {}
-            public function info(string|\Stringable $message, array $context = []): void { $this->captured = $context; }
-            public function emergency(string|\Stringable $message, array $context = []): void {}
-            public function alert(string|\Stringable $message, array $context = []): void {}
-            public function critical(string|\Stringable $message, array $context = []): void {}
-            public function error(string|\Stringable $message, array $context = []): void {}
-            public function warning(string|\Stringable $message, array $context = []): void {}
-            public function notice(string|\Stringable $message, array $context = []): void {}
-            public function debug(string|\Stringable $message, array $context = []): void {}
-            public function log($level, string|\Stringable $message, array $context = []): void {}
+            public function __construct(private mixed &$captured)
+            {
+            }
+            public function info(string|\Stringable $message, array $context = []): void
+            {
+                $this->captured = $context;
+            }
+            public function emergency(string|\Stringable $message, array $context = []): void
+            {
+            }
+            public function alert(string|\Stringable $message, array $context = []): void
+            {
+            }
+            public function critical(string|\Stringable $message, array $context = []): void
+            {
+            }
+            public function error(string|\Stringable $message, array $context = []): void
+            {
+            }
+            public function warning(string|\Stringable $message, array $context = []): void
+            {
+            }
+            public function notice(string|\Stringable $message, array $context = []): void
+            {
+            }
+            public function debug(string|\Stringable $message, array $context = []): void
+            {
+            }
+            public function log($level, string|\Stringable $message, array $context = []): void
+            {
+            }
         };
 
         $auditLogger = new PsrAuditLogger($capturingLogger, new AuditConfig(redactFields: []));

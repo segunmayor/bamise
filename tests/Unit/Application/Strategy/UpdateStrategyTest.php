@@ -51,8 +51,16 @@ final class UpdateStrategyTest extends TestCase
             {
             }
 
-            public function find(ResourceId $id): ?array { unset($id); return null; }
-            public function insert(array $data): ResourceId { unset($data); return new ResourceId(1); }
+            public function find(ResourceId $id): ?array
+            {
+                unset($id);
+                return null;
+            }
+            public function insert(array $data): ResourceId
+            {
+                unset($data);
+                return new ResourceId(1);
+            }
             public function update(ResourceId $id, array $data): bool
             {
                 $this->captured = $data;
@@ -60,10 +68,23 @@ final class UpdateStrategyTest extends TestCase
                 return true;
             }
 
-            public function delete(ResourceId $id): bool { unset($id); return true; }
-            public function findAll(array $criteria = [], int $limit = 100, int $offset = 0): array { return []; }
-            public function updateBulk(array $criteria, array $data): int { return 0; }
-            public function deleteBulk(array $criteria): int { return 0; }
+            public function delete(ResourceId $id): bool
+            {
+                unset($id);
+                return true;
+            }
+            public function findAll(array $criteria = [], int $limit = 100, int $offset = 0): array
+            {
+                return [];
+            }
+            public function updateBulk(array $criteria, array $data): int
+            {
+                return 0;
+            }
+            public function deleteBulk(array $criteria): int
+            {
+                return 0;
+            }
         };
 
         $def = new FakeResourceDefinition();
@@ -84,13 +105,38 @@ final class UpdateStrategyTest extends TestCase
             {
             }
 
-            public function find(ResourceId $id): ?array { unset($id); return null; }
-            public function insert(array $data): ResourceId { unset($data); return new ResourceId(1); }
-            public function update(ResourceId $id, array $data): bool { unset($id, $data); return $this->updated; }
-            public function delete(ResourceId $id): bool { unset($id); return true; }
-            public function findAll(array $criteria = [], int $limit = 100, int $offset = 0): array { return []; }
-            public function updateBulk(array $criteria, array $data): int { return 0; }
-            public function deleteBulk(array $criteria): int { return 0; }
+            public function find(ResourceId $id): ?array
+            {
+                unset($id);
+                return null;
+            }
+            public function insert(array $data): ResourceId
+            {
+                unset($data);
+                return new ResourceId(1);
+            }
+            public function update(ResourceId $id, array $data): bool
+            {
+                unset($id, $data);
+                return $this->updated;
+            }
+            public function delete(ResourceId $id): bool
+            {
+                unset($id);
+                return true;
+            }
+            public function findAll(array $criteria = [], int $limit = 100, int $offset = 0): array
+            {
+                return [];
+            }
+            public function updateBulk(array $criteria, array $data): int
+            {
+                return 0;
+            }
+            public function deleteBulk(array $criteria): int
+            {
+                return 0;
+            }
         };
 
         $def = new FakeResourceDefinition();

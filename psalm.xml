@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <psalm
-    errorLevel="8"
+    errorLevel="1"
     resolveFromConfigFile="true"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns="https://getpsalm.org/schema/config"
@@ -42,8 +42,22 @@
             the ternary null-coalesce chain.
         -->
         <PossiblyNullArgument errorLevel="info" />
-        <!-- Casts in AuditMiddleware are load-bearing for PHPStan level 9. -->
+        <!--
+            Defensive casts retained so that code is safe even when callers
+            pass untyped arrays (e.g. from PDO, HTTP request bags). Psalm cannot
+            always see through dynamic dispatch to the concrete type.
+        -->
         <RedundantCastGivenDocblockType errorLevel="info" />
+        <!--
+            Library boundary: this codebase processes array<string, mixed> from
+            HTTP requests, PDO result sets, and event payloads. Each call site
+            performs its own is_string/is_int/is_array narrowing before use;
+            Psalm cannot follow all those paths. PHPStan level max catches real
+            type errors. Demote mixed-assignment/argument noise to info here.
+        -->
+        <MixedAssignment errorLevel="info" />
+        <MixedArgument errorLevel="info" />
+        <MixedMethodCall errorLevel="info" />
         <!--
             JwtAuthAdapter::$secret is used inside a class_exists() guard for
             an optional dependency (firebase/php-jwt). Psalm cannot trace usage
