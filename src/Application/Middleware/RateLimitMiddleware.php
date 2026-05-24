@@ -18,6 +18,7 @@ final class RateLimitMiddleware implements MiddlewareInterface
     ) {
     }
 
+    #[\Override]
     public function process(CrudContext $context, CrudHandlerInterface $next): CrudResult
     {
         $key = $context->request->clientIp()

@@ -17,6 +17,7 @@ final class CacheRateLimiter implements RateLimiterPortInterface
     ) {
     }
 
+    #[\Override]
     public function attempt(string $key): bool
     {
         $cacheKey = self::CACHE_PREFIX . $key;
@@ -40,6 +41,7 @@ final class CacheRateLimiter implements RateLimiterPortInterface
         return true;
     }
 
+    #[\Override]
     public function remaining(string $key): int
     {
         $cacheKey = self::CACHE_PREFIX . $key;

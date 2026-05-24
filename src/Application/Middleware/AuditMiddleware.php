@@ -20,6 +20,7 @@ final class AuditMiddleware implements MiddlewareInterface
     ) {
     }
 
+    #[\Override]
     public function process(CrudContext $context, CrudHandlerInterface $next): CrudResult
     {
         $result = $next->handle($context);
@@ -52,12 +53,27 @@ final class AuditMiddleware implements MiddlewareInterface
             actor: $actor,
             action: $context->operation->value,
             resource: $context->resourceName,
-            recordId: $result->data['id'] ?? $context->inputData['id'] ?? null,
+            recordId: $this->resolveRecordId($result->data, $context->inputData),
             ip: $context->request->clientIp(),
             userAgent: $this->headerValue($context->request->headers(), 'user-agent'),
             before: null,
             after: $result->data !== [] ? $result->data : null,
         );
+    }
+
+    /**
+     * @param array<string, mixed> $data
+     * @param array<string, mixed> $inputData
+     */
+    private function resolveRecordId(array $data, array $inputData): int|string|null
+    {
+        $value = $data['id'] ?? $inputData['id'] ?? null;
+
+        if (is_int($value) || is_string($value)) {
+            return $value;
+        }
+
+        return null;
     }
 
     /**

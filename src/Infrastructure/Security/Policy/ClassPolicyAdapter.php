@@ -23,6 +23,7 @@ final class ClassPolicyAdapter implements PolicyPortInterface
         $this->policyClasses = array_values($policyClasses);
     }
 
+    #[\Override]
     public function allows(OperationType $operation, ?object $subject, string $resource): bool
     {
         if ($subject === null) {

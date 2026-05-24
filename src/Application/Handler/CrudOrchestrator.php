@@ -20,6 +20,7 @@ final class CrudOrchestrator implements CrudHandlerInterface
     ) {
     }
 
+    #[\Override]
     public function handle(CrudContext $context): CrudResult
     {
         if (! $this->hasLifecycleEvents($context->operation)) {

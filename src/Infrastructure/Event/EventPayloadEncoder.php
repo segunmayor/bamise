@@ -54,6 +54,18 @@ final class EventPayloadEncoder
 
         $payload = $event->payload;
 
-        return is_array($payload) ? $payload : null;
+        if (! is_array($payload)) {
+            return null;
+        }
+
+        $result = [];
+
+        foreach ($payload as $key => $value) {
+            if (is_string($key)) {
+                $result[$key] = $value;
+            }
+        }
+
+        return $result;
     }
 }

@@ -14,6 +14,7 @@ final class InMemoryQueue implements QueuePortInterface
     /** @var list<array{job: string, payload: array<string, mixed>}> */
     private array $jobs = [];
 
+    #[\Override]
     public function push(string $job, array $payload): void
     {
         $this->jobs[] = [

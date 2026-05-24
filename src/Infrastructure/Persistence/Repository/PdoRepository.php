@@ -25,6 +25,7 @@ final class PdoRepository implements RepositoryInterface
     ) {
     }
 
+    #[\Override]
     public function find(ResourceId $id): ?array
     {
         $query = $this->compiler->compileSelectById($this->table, $this->primaryKey, $id->value);
@@ -32,6 +33,7 @@ final class PdoRepository implements RepositoryInterface
         return $this->fetchOne($query);
     }
 
+    #[\Override]
     public function insert(array $data): ResourceId
     {
         $data = $this->compiler->whitelistColumns($this->fillable, $data);
@@ -44,7 +46,13 @@ final class PdoRepository implements RepositoryInterface
                 throw new \RuntimeException('Insert did not return a primary key.');
             }
 
-            return new ResourceId($row[$this->primaryKey]);
+            $pkValue = $row[$this->primaryKey];
+
+            if (! is_int($pkValue) && ! is_string($pkValue)) {
+                throw new \RuntimeException('Insert did not return a usable primary key value.');
+            }
+
+            return new ResourceId($pkValue);
         }
 
         $this->execute($query);
@@ -52,7 +60,13 @@ final class PdoRepository implements RepositoryInterface
 
         if ($lastId === false || $lastId === '0') {
             if (array_key_exists($this->primaryKey, $data)) {
-                return new ResourceId($data[$this->primaryKey]);
+                $pkFallback = $data[$this->primaryKey];
+
+                if (! is_int($pkFallback) && ! is_string($pkFallback)) {
+                    throw new \RuntimeException('Unable to resolve inserted primary key.');
+                }
+
+                return new ResourceId($pkFallback);
             }
 
             throw new \RuntimeException('Unable to resolve inserted primary key.');
@@ -61,6 +75,7 @@ final class PdoRepository implements RepositoryInterface
         return new ResourceId(is_numeric($lastId) ? (int) $lastId : $lastId);
     }
 
+    #[\Override]
     public function update(ResourceId $id, array $data): bool
     {
         $data = $this->compiler->whitelistColumns($this->fillable, $data);
@@ -69,6 +84,7 @@ final class PdoRepository implements RepositoryInterface
         return $this->execute($query) > 0;
     }
 
+    #[\Override]
     public function delete(ResourceId $id): bool
     {
         $query = $this->compiler->compileDelete($this->table, $this->primaryKey, $id->value);
@@ -76,6 +92,7 @@ final class PdoRepository implements RepositoryInterface
         return $this->execute($query) > 0;
     }
 
+    #[\Override]
     public function findAll(array $criteria = [], int $limit = 100, int $offset = 0): array
     {
         $query = $this->compiler->compileSelectAll($this->table, $criteria, $limit, $offset);
@@ -83,6 +100,7 @@ final class PdoRepository implements RepositoryInterface
         return $this->fetchAll($query);
     }
 
+    #[\Override]
     public function updateBulk(array $criteria, array $data): int
     {
         $data = $this->compiler->whitelistColumns($this->fillable, $data);
@@ -91,6 +109,7 @@ final class PdoRepository implements RepositoryInterface
         return $this->execute($query);
     }
 
+    #[\Override]
     public function deleteBulk(array $criteria): int
     {
         $query = $this->compiler->compileDeleteWhere($this->table, $criteria);
@@ -107,11 +126,19 @@ final class PdoRepository implements RepositoryInterface
         $statement->execute($query->bindings);
         $row = $statement->fetch(PDO::FETCH_ASSOC);
 
-        if ($row === false) {
+        if (! is_array($row)) {
             return null;
         }
 
-        return $row;
+        $result = [];
+
+        foreach ($row as $key => $value) {
+            if (is_string($key)) {
+                $result[$key] = $value;
+            }
+        }
+
+        return $result;
     }
 
     private function execute(CompiledQuery $query): int

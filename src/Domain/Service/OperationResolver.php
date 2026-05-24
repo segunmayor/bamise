@@ -58,7 +58,7 @@ final class OperationResolver
         ?RouteOperationConfig $routeConfig,
     ): OperationType {
         // Priority 1 — server pin: authoritative, no client input consulted.
-        if ($routeConfig !== null && $routeConfig->isPinned()) {
+        if ($routeConfig !== null && $routeConfig->pinned !== null) {
             return $routeConfig->pinned;
         }
 

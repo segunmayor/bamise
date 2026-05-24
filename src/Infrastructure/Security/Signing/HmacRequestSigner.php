@@ -18,6 +18,7 @@ final class HmacRequestSigner implements RequestSignerPortInterface
     ) {
     }
 
+    #[\Override]
     public function verify(CrudRequestInterface $request): bool
     {
         if ($this->config->secret === '') {
@@ -67,12 +68,13 @@ final class HmacRequestSigner implements RequestSignerPortInterface
     /**
      * @param array<string, mixed> $payload Keys: method, path, timestamp, nonce, body (array) or body_hash
      */
+    #[\Override]
     public function sign(array $payload): string
     {
-        $method = (string) ($payload['method'] ?? 'GET');
-        $path = (string) ($payload['path'] ?? '/');
-        $timestamp = (string) ($payload['timestamp'] ?? (string) time());
-        $nonce = (string) ($payload['nonce'] ?? bin2hex(random_bytes(16)));
+        $method = is_string($payload['method'] ?? null) ? $payload['method'] : 'GET';
+        $path = is_string($payload['path'] ?? null) ? $payload['path'] : '/';
+        $timestamp = is_string($payload['timestamp'] ?? null) ? $payload['timestamp'] : (string) time();
+        $nonce = is_string($payload['nonce'] ?? null) ? $payload['nonce'] : bin2hex(random_bytes(16));
 
         if (isset($payload['body_hash']) && is_string($payload['body_hash'])) {
             $bodyHash = $payload['body_hash'];

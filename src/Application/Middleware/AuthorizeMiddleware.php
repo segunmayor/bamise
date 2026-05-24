@@ -23,6 +23,7 @@ final class AuthorizeMiddleware implements MiddlewareInterface
     ) {
     }
 
+    #[\Override]
     public function process(CrudContext $context, CrudHandlerInterface $next): CrudResult
     {
         $subject = $context->subject;

@@ -21,6 +21,7 @@ final class AuthenticationMiddleware implements MiddlewareInterface
     ) {
     }
 
+    #[\Override]
     public function process(CrudContext $context, CrudHandlerInterface $next): CrudResult
     {
         $authSubject = $this->auth->authenticate($context->request)

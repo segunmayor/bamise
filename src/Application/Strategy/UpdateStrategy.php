@@ -21,16 +21,17 @@ final class UpdateStrategy implements OperationStrategyInterface
     ) {
     }
 
+    #[\Override]
     public function execute(CrudContext $context): CrudResult
     {
         $definition = $this->resources->get($context->resourceName);
         $repository = $this->repositories->for($context->resourceName);
         $primaryKey = $definition->primaryKey();
-        $idValue = $context->inputData[$primaryKey]
+        $raw = $context->inputData[$primaryKey]
             ?? $context->inputData['id']
             ?? null;
 
-        if ($idValue === null || $idValue === '') {
+        if (! is_int($raw) && ! is_string($raw)) {
             return new CrudResult(
                 success: false,
                 errors: ['message' => 'Resource not found'],
@@ -45,7 +46,7 @@ final class UpdateStrategy implements OperationStrategyInterface
         );
         unset($data[$primaryKey]);
 
-        $updated = $repository->update(new ResourceId($idValue), $data);
+        $updated = $repository->update(new ResourceId($raw), $data);
 
         if (! $updated) {
             return new CrudResult(
@@ -57,7 +58,7 @@ final class UpdateStrategy implements OperationStrategyInterface
 
         return new CrudResult(
             success: true,
-            data: array_merge([$primaryKey => $idValue], $data),
+            data: array_merge([$primaryKey => $raw], $data),
             meta: ['operation' => $context->operation->value],
         );
     }

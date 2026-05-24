@@ -18,6 +18,7 @@ final class SyncEventDispatcher implements EventDispatcherPortInterface
     ) {
     }
 
+    #[\Override]
     public function dispatch(object $event): void
     {
         foreach ($this->registry->forEvent($event) as $entry) {
@@ -35,6 +36,7 @@ final class SyncEventDispatcher implements EventDispatcherPortInterface
         }
     }
 
+    #[\Override]
     public function subscribe(string $eventClass, callable $listener, int $priority = 0): void
     {
         $this->registry->add($eventClass, $listener, $priority, async: false);

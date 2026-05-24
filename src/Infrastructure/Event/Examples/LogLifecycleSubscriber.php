@@ -21,6 +21,7 @@ final class LogLifecycleSubscriber implements EventSubscriberInterface
     ) {
     }
 
+    #[\Override]
     public function getSubscribedEvents(): array
     {
         return [

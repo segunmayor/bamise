@@ -14,6 +14,7 @@ final class InMemoryCache implements CachePortInterface
     /** @var array<string, array{value: mixed, expires: ?int}> */
     private array $store = [];
 
+    #[\Override]
     public function get(string $key): mixed
     {
         if (! isset($this->store[$key])) {
@@ -30,6 +31,7 @@ final class InMemoryCache implements CachePortInterface
         return $entry['value'];
     }
 
+    #[\Override]
     public function set(string $key, mixed $value, ?int $ttl = null): void
     {
         $this->store[$key] = [
@@ -38,6 +40,7 @@ final class InMemoryCache implements CachePortInterface
         ];
     }
 
+    #[\Override]
     public function delete(string $key): bool
     {
         if (! isset($this->store[$key])) {

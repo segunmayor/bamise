@@ -16,6 +16,7 @@ final class StrategyDispatchHandler implements CrudHandlerInterface
     ) {
     }
 
+    #[\Override]
     public function handle(CrudContext $context): CrudResult
     {
         return $this->strategyFactory

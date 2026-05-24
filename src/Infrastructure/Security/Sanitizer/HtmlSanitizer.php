@@ -17,6 +17,7 @@ final class HtmlSanitizer implements SanitizerPortInterface
      * @param array<string, mixed> $data
      * @return array<string, mixed>
      */
+    #[\Override]
     public function sanitize(array $data): array
     {
         $result = [];

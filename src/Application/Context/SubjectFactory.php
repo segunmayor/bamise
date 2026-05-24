@@ -33,9 +33,11 @@ final class SubjectFactory
                 throw new InvalidArgumentException('Auth subject id must be string or int.');
             }
 
-            $roles = method_exists($authSubject, 'roles') ? (array) $authSubject->roles() : [];
+            $roles = method_exists($authSubject, 'roles')
+                ? array_values(array_map('strval', (array) $authSubject->roles()))
+                : [];
             $permissions = method_exists($authSubject, 'permissions')
-                ? (array) $authSubject->permissions()
+                ? array_values(array_map('strval', (array) $authSubject->permissions()))
                 : [];
 
             return new Subject($id, $roles, $permissions);

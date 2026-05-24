@@ -18,6 +18,7 @@ final class SigningMiddleware implements MiddlewareInterface
     ) {
     }
 
+    #[\Override]
     public function process(CrudContext $context, CrudHandlerInterface $next): CrudResult
     {
         if (! $this->signer->verify($context->request)) {

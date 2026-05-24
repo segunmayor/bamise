@@ -9,6 +9,7 @@ use Bamise\Contract\Persistence\DatabaseDialectInterface;
 
 class MysqlDialect implements DatabaseDialectInterface
 {
+    #[\Override]
     public function quoteIdentifier(string $identifier): string
     {
         $this->assertValidIdentifier($identifier);
@@ -16,11 +17,13 @@ class MysqlDialect implements DatabaseDialectInterface
         return '`' . str_replace('`', '``', $identifier) . '`';
     }
 
+    #[\Override]
     public function supportsReturning(): bool
     {
         return false;
     }
 
+    #[\Override]
     public function driver(): DatabaseDriver
     {
         return DatabaseDriver::Mysql;

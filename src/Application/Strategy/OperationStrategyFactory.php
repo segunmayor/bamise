@@ -45,6 +45,7 @@ final class OperationStrategyFactory implements OperationStrategyFactoryInterfac
         }
     }
 
+    #[\Override]
     public function for(OperationType $operation): OperationStrategyInterface
     {
         if (! isset($this->strategies[$operation->value])) {

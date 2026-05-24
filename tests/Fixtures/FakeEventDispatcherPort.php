@@ -11,6 +11,9 @@ final class FakeEventDispatcherPort implements EventDispatcherPortInterface
     /** @var list<object> */
     public array $dispatched = [];
 
+    /** @var array<string, list<array{listener: callable, priority: int}>> */
+    public array $subscriptions = [];
+
     public function dispatch(object $event): void
     {
         $this->dispatched[] = $event;
@@ -18,6 +21,6 @@ final class FakeEventDispatcherPort implements EventDispatcherPortInterface
 
     public function subscribe(string $eventClass, callable $listener, int $priority = 0): void
     {
-        unset($eventClass, $listener, $priority);
+        $this->subscriptions[$eventClass][] = ['listener' => $listener, 'priority' => $priority];
     }
 }

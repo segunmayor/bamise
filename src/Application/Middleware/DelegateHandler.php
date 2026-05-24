@@ -17,6 +17,7 @@ final class DelegateHandler implements CrudHandlerInterface
     ) {
     }
 
+    #[\Override]
     public function handle(CrudContext $context): CrudResult
     {
         return $this->middleware->process($context, $this->next);

@@ -25,6 +25,7 @@ final class ValidateMiddleware implements MiddlewareInterface
     ) {
     }
 
+    #[\Override]
     public function process(CrudContext $context, CrudHandlerInterface $next): CrudResult
     {
         $definition = $this->resourceRegistry->get($context->resourceName);

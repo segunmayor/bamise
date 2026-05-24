@@ -28,6 +28,7 @@ final class MiddlewarePipeline implements CrudHandlerInterface
         );
     }
 
+    #[\Override]
     public function handle(CrudContext $context): CrudResult
     {
         $handler = $this->terminal;
@@ -54,7 +55,7 @@ final class MiddlewarePipeline implements CrudHandlerInterface
                 continue;
             }
 
-            $normalized[] = new PrioritizedMiddleware($item, (int) $index * 100);
+            $normalized[] = new PrioritizedMiddleware($item, is_int($index) ? $index * 100 : 0);
         }
 
         return $normalized;

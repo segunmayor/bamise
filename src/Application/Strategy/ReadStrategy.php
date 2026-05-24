@@ -19,17 +19,18 @@ final class ReadStrategy implements OperationStrategyInterface
     ) {
     }
 
+    #[\Override]
     public function execute(CrudContext $context): CrudResult
     {
         $definition = $this->resources->get($context->resourceName);
         $repository = $this->repositories->for($context->resourceName);
         $primaryKey = $definition->primaryKey();
-        $idValue = $context->inputData[$primaryKey]
+        $raw = $context->inputData[$primaryKey]
             ?? $context->inputData['id']
             ?? null;
 
-        if ($idValue !== null && $idValue !== '') {
-            $row = $repository->find(new ResourceId($idValue));
+        if (is_int($raw) || (is_string($raw) && $raw !== '')) {
+            $row = $repository->find(new ResourceId($raw));
 
             if ($row === null) {
                 return $this->notFound($context);

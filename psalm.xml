@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<psalm
+    errorLevel="8"
+    resolveFromConfigFile="true"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="https://getpsalm.org/schema/config"
+    xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+    findUnusedBaselineEntry="true"
+    findUnusedCode="true"
+>
+    <projectFiles>
+        <directory name="src/" />
+        <ignoreFiles>
+            <directory name="vendor" />
+        </ignoreFiles>
+    </projectFiles>
+
+    <!--
+        This is a library/framework. Classes, properties, and methods that look
+        "unused" within src/ are public API consumed by downstream applications
+        that live outside the analyzed tree. Suppress the whole category rather
+        than sprinkling per-file suppressions everywhere.
+    -->
+    <issueHandlers>
+        <UnusedClass errorLevel="suppress" />
+        <PossiblyUnusedMethod errorLevel="suppress" />
+        <PossiblyUnusedProperty errorLevel="suppress" />
+        <!--
+            CachePortInterface::get() return value is intentionally ignorable
+            by callers (fire-and-forget patterns, existence checks, etc.).
+        -->
+        <PossiblyUnusedReturnValue errorLevel="suppress" />
+        <!--
+            Library code: Contract/Event and Contract/Exception classes are
+            intentionally extendable by downstream consumers. Suppress for the
+            entire library since Psalm cannot see consumer code.
+        -->
+        <ClassMustBeFinal errorLevel="info" />
+        <!--
+            ReadStrategy narrows $raw with is_int()||is_string() before calling
+            ResourceId::__construct — Psalm cannot trace the narrowing through
+            the ternary null-coalesce chain.
+        -->
+        <PossiblyNullArgument errorLevel="info" />
+        <!-- Casts in AuditMiddleware are load-bearing for PHPStan level 9. -->
+        <RedundantCastGivenDocblockType errorLevel="info" />
+        <!--
+            JwtAuthAdapter::$secret is used inside a class_exists() guard for
+            an optional dependency (firebase/php-jwt). Psalm cannot trace usage
+            through dynamic class resolution.
+        -->
+        <UnusedProperty>
+            <errorLevel type="suppress">
+                <referencedProperty name="Bamise\Infrastructure\Security\Auth\JwtAuthAdapter::$secret" />
+            </errorLevel>
+        </UnusedProperty>
+    </issueHandlers>
+</psalm>

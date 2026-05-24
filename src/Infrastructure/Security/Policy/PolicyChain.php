@@ -20,6 +20,7 @@ final class PolicyChain implements PolicyPortInterface
         $this->policies = array_values($policies);
     }
 
+    #[\Override]
     public function allows(OperationType $operation, ?object $subject, string $resource): bool
     {
         foreach ($this->policies as $policy) {

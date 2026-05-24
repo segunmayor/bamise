@@ -19,6 +19,7 @@ final class SessionCsrfService implements CsrfPortInterface
     ) {
     }
 
+    #[\Override]
     public function validate(CrudRequestInterface $request): bool
     {
         $sessionId = $this->resolveSessionId($request);
@@ -31,6 +32,7 @@ final class SessionCsrfService implements CsrfPortInterface
         return $this->verify($token, $sessionId);
     }
 
+    #[\Override]
     public function generateToken(): string
     {
         return $this->generateForSession($this->config->defaultSessionId);

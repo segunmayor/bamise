@@ -20,6 +20,7 @@ final class BulkUpdateStrategy implements OperationStrategyInterface
     ) {
     }
 
+    #[\Override]
     public function execute(CrudContext $context): CrudResult
     {
         $definition = $this->resources->get($context->resourceName);

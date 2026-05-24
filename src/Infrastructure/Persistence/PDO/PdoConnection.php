@@ -26,16 +26,19 @@ final class PdoConnection implements ConnectionInterface
         return new self($pdo, $dialect);
     }
 
+    #[\Override]
     public function pdo(): PDO
     {
         return $this->pdo;
     }
 
+    #[\Override]
     public function dialect(): DatabaseDialectInterface
     {
         return $this->dialect;
     }
 
+    #[\Override]
     public function transaction(callable $callback): mixed
     {
         if ($this->pdo->inTransaction()) {

@@ -8,6 +8,7 @@ use Bamise\Contract\Enum\DatabaseDriver;
 
 final class MariadbDialect extends MysqlDialect
 {
+    #[\Override]
     public function driver(): DatabaseDriver
     {
         return DatabaseDriver::Mariadb;

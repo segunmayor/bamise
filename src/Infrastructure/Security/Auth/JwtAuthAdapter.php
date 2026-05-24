@@ -20,11 +20,13 @@ final class JwtAuthAdapter implements AuthPortInterface
     ) {
     }
 
+    #[\Override]
     public function subject(): ?object
     {
         return null;
     }
 
+    #[\Override]
     public function authenticate(CrudRequestInterface $request): ?object
     {
         if (! class_exists(\Firebase\JWT\JWT::class) || ! class_exists(\Firebase\JWT\Key::class)) {

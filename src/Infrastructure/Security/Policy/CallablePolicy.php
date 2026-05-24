@@ -20,6 +20,7 @@ final class CallablePolicy implements PolicyPortInterface
         $this->predicate = $predicate;
     }
 
+    #[\Override]
     public function allows(OperationType $operation, ?object $subject, string $resource): bool
     {
         return ($this->predicate)($operation, $subject, $resource);

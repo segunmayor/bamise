@@ -16,6 +16,7 @@ final class BulkDeleteStrategy implements OperationStrategyInterface
     ) {
     }
 
+    #[\Override]
     public function execute(CrudContext $context): CrudResult
     {
         $repository = $this->repositories->for($context->resourceName);

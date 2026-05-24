@@ -8,6 +8,6 @@ final class CsrfTokenGenerator
 {
     public function generate(int $byteLength = 32): string
     {
-        return bin2hex(random_bytes($byteLength));
+        return bin2hex(random_bytes(max(1, $byteLength)));
     }
 }

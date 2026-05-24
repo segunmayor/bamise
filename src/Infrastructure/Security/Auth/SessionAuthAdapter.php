@@ -18,11 +18,13 @@ final class SessionAuthAdapter implements AuthPortInterface
     ) {
     }
 
+    #[\Override]
     public function subject(): ?object
     {
         return null;
     }
 
+    #[\Override]
     public function authenticate(CrudRequestInterface $request): ?object
     {
         $subjectId = $request->input()[$this->subjectField] ?? null;

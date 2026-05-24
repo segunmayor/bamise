@@ -27,6 +27,7 @@ final class DefaultPluginRegistry implements PluginRegistryInterface
     ) {
     }
 
+    #[\Override]
     public function addMiddleware(MiddlewareInterface $middleware): void
     {
         $this->middleware[] = $middleware;
@@ -35,6 +36,7 @@ final class DefaultPluginRegistry implements PluginRegistryInterface
     /**
      * @param array<string, mixed> $rules
      */
+    #[\Override]
     public function addRule(string $resource, OperationType $operation, array $rules): void
     {
         $this->rules[$resource][$operation->value] = $rules;
@@ -43,11 +45,13 @@ final class DefaultPluginRegistry implements PluginRegistryInterface
     /**
      * @param class-string $policyClass
      */
+    #[\Override]
     public function addPolicy(string $policyClass): void
     {
         $this->policies[] = $policyClass;
     }
 
+    #[\Override]
     public function subscribe(string $eventClass, callable $listener, int $priority = 0): void
     {
         $this->eventDispatcher->subscribe($eventClass, $listener, $priority);

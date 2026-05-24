@@ -19,16 +19,17 @@ final class DeleteStrategy implements OperationStrategyInterface
     ) {
     }
 
+    #[\Override]
     public function execute(CrudContext $context): CrudResult
     {
         $definition = $this->resources->get($context->resourceName);
         $repository = $this->repositories->for($context->resourceName);
         $primaryKey = $definition->primaryKey();
-        $idValue = $context->inputData[$primaryKey]
+        $raw = $context->inputData[$primaryKey]
             ?? $context->inputData['id']
             ?? null;
 
-        if ($idValue === null || $idValue === '') {
+        if (! is_int($raw) && ! is_string($raw)) {
             return new CrudResult(
                 success: false,
                 errors: ['message' => 'Resource not found'],
@@ -36,7 +37,7 @@ final class DeleteStrategy implements OperationStrategyInterface
             );
         }
 
-        $deleted = $repository->delete(new ResourceId($idValue));
+        $deleted = $repository->delete(new ResourceId($raw));
 
         if (! $deleted) {
             return new CrudResult(
@@ -48,7 +49,7 @@ final class DeleteStrategy implements OperationStrategyInterface
 
         return new CrudResult(
             success: true,
-            data: [$primaryKey => $idValue],
+            data: [$primaryKey => $raw],
             meta: ['operation' => $context->operation->value],
         );
     }

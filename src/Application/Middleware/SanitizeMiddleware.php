@@ -19,6 +19,7 @@ final class SanitizeMiddleware implements MiddlewareInterface
     ) {
     }
 
+    #[\Override]
     public function process(CrudContext $context, CrudHandlerInterface $next): CrudResult
     {
         $sanitized = $this->sanitizer->sanitize($context->inputData);

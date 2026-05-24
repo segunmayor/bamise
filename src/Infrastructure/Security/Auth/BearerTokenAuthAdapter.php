@@ -16,11 +16,13 @@ final class BearerTokenAuthAdapter implements AuthPortInterface
 {
     private ?object $resolvedSubject = null;
 
+    #[\Override]
     public function subject(): ?object
     {
         return $this->resolvedSubject;
     }
 
+    #[\Override]
     public function authenticate(CrudRequestInterface $request): ?object
     {
         $this->resolvedSubject = null;

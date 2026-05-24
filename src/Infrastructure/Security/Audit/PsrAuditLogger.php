@@ -23,6 +23,7 @@ final class PsrAuditLogger implements AuditLoggerPortInterface
         );
     }
 
+    #[\Override]
     public function log(AuditRecord $record): void
     {
         $payload = [
