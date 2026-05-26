@@ -1,5 +1,5 @@
 {
-    "name": "bamise/bamise",
+    "name": "bamise/framework",
     "description": "Secure enterprise CRUD library for PHP 8.4+ — hexagonal architecture, DDD, PSR standards, JWT/CSRF/XSS protection, event system.",
     "type": "library",
     "license": "MIT",
@@ -12,19 +12,20 @@
         "psr",
         "event",
         "php8",
-        "enterprise"
+        "enterprise",
+        "bamise"
     ],
-    "homepage": "https://github.com/bamise/bamise",
+    "homepage": "https://github.com/segunmayor/bamise.git",
     "authors": [
         {
             "name": "Segun Mayor",
-            "email": "lungu.sports.entertainment@gmail.com",
+            "email": "segunmayor4331@gmail.com",
             "role": "Developer"
         }
     ],
     "support": {
-        "issues": "https://github.com/bamise/bamise/issues",
-        "source": "https://github.com/bamise/bamise"
+        "issues": "https://github.com/segunmayor/bamise.git/issues",
+        "source": "https://github.com/segunmayor/bamise.git"
     },
     "require": {
         "php": "^8.4",

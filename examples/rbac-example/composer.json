@@ -1,0 +1,22 @@
+{
+    "name": "bamise-examples/rbac-example",
+    "description": "Bamise RBAC example — role-based access control with custom policy classes",
+    "type": "project",
+    "require": {
+        "php": ">=8.4",
+        "bamise/framework": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../.."
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

@@ -1,5 +1,19 @@
 # Bamise
 
+<p align="center">
+    <img src=".github/assets/bamise_logo.png" width="450">
+</p>
+
+<h1 align="center">
+Bamise
+</h1>
+
+<p align="center">
+Enterprise Secure CRUD Automation Framework
+</p>
+
+[B]
+
 [![CI](https://github.com/bamise/bamise/actions/workflows/ci.yml/badge.svg)](https://github.com/bamise/bamise/actions/workflows/ci.yml)
 [![Mutation Testing](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fbamise%2Fbamise%2Fmain)](https://dashboard.stryker-mutator.io/reports/github.com/bamise/bamise/main)
 [![PHP 8.4+](https://img.shields.io/badge/php-8.4%2B-blue)](https://www.php.net/)
@@ -306,6 +320,12 @@ See [SECURITY.md](.github/SECURITY.md).
 
 ---
 
-## License
+## License & Copyright
 
-MIT — see [LICENSE](LICENSE).
+Formerly: Sitcalm
+Current: Bamise Framework
+Support development via donations
+
+Copyright (c) 2026 Segun Mayor
+
+This project is licensed under the **GNU General Public License v3.0**. See the [LICENSE](LICENSE) file for the full text.

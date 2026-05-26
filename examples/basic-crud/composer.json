@@ -1,0 +1,22 @@
+{
+    "name": "bamise-examples/basic-crud",
+    "description": "Bamise basic CRUD example — users table with SQLite",
+    "type": "project",
+    "require": {
+        "php": ">=8.4",
+        "bamise/framework": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../.."
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

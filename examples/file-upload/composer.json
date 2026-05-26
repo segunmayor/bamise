@@ -1,0 +1,22 @@
+{
+    "name": "bamise-examples/file-upload",
+    "description": "Bamise file upload example — store file metadata via CRUD, custom middleware for physical file handling",
+    "type": "project",
+    "require": {
+        "php": ">=8.4",
+        "bamise/framework": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../.."
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
