@@ -2,7 +2,7 @@
     "name": "bamise/framework",
     "description": "Secure enterprise CRUD library for PHP 8.4+ — hexagonal architecture, DDD, PSR standards, JWT/CSRF/XSS protection, event system.",
     "type": "library",
-    "license": "MIT",
+    "license": "GPL-3.0-or-later",
     "keywords": [
         "crud",
         "repository",
