@@ -12,12 +12,10 @@ Bamise
 Enterprise Secure CRUD Automation Framework
 </p>
 
-[B]
-
 [![CI](https://github.com/bamise/bamise/actions/workflows/ci.yml/badge.svg)](https://github.com/bamise/bamise/actions/workflows/ci.yml)
 [![Mutation Testing](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fbamise%2Fbamise%2Fmain)](https://dashboard.stryker-mutator.io/reports/github.com/bamise/bamise/main)
 [![PHP 8.4+](https://img.shields.io/badge/php-8.4%2B-blue)](https://www.php.net/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![License: GPL v3](https://shields.io)](https://www.gnu.org/licenses/gpl-3.0)(LICENSE)
 
 Secure enterprise CRUD library for PHP 8.4+ built on hexagonal (ports-and-adapters) architecture.
 Domain-driven, PSR-compliant, zero hardcoded dependencies.
