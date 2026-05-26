@@ -49,7 +49,7 @@ Optional: `firebase/php-jwt ^6.10` for `JwtAuthAdapter` (HS256 bearer validation
 ## Installation
 
 ```bash
-composer require bamise/bamise
+composer require bamise/framework
 ```
 
 ---
